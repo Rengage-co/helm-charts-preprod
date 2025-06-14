@@ -139,3 +139,13 @@ redis:
   replica:
     replicaCount: 1
     resourcesPreset: "small"
+
+elasticsearch:
+  enabled: true
+  replicas: 1
+  secret:
+    password: "password"
+  volumeClaimTemplate:
+    resources:
+      requests:
+        storage: 100Gi
