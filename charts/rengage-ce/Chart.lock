@@ -11,8 +11,8 @@ dependencies:
 - name: minio
   repository: https://charts.bitnami.com/bitnami
   version: 17.0.4
-- name: clickhouse
+- name: kafka
   repository: https://charts.bitnami.com/bitnami
-  version: 9.3.3
-digest: sha256:62b03d603350766f9b5df382c3f73011b5a63c996649913c3524fa5db0bdd67f
-generated: "2025-06-14T10:50:00.333157-07:00"
+  version: 32.2.15
+digest: sha256:05c7dc9668744e7af53c192cf239346394567ed7a6be19da3f67b6fa764ece2e
+generated: "2025-06-14T10:53:32.19242-07:00"
