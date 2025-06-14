@@ -1,4 +1,4 @@
-# Default values for rengage-ce.
+# Default values for rengage-ce-depandency.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -127,3 +127,60 @@ affinity: {}
 #   grafana:
 #     adminUser: admin
 #     adminPassword: password
+
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: true
+    password: password
+  master:
+    resourcesPreset: "small"
+  replica:
+    replicaCount: 1
+    resourcesPreset: "small"
+
+elasticsearch:
+  enabled: true
+  replicas: 1
+  secret:
+    password: password
+  volumeClaimTemplate:
+    resources:
+      requests:
+        storage: 100Gi
+
+minio:
+  enabled: true
+  auth:
+    rootUser: admin
+    rootPassword: password
+  persistence:
+    size: 100Gi
+
+clickhouse:
+  enabled: true
+  auth:
+    username: default
+    password: password
+  shards: 1
+  persistence:
+    size: 100Gi
+  keeper:
+    persistence:
+      size: 30Gi
+
+kafka:
+  enabled: true
+  broker:
+    persistence:
+      size: 100Gi
+  controller:
+    persistence:
+      size: 30Gi
+  sasl:
+    client:
+      passwords:
+        - password
+      users:
+        - user1
