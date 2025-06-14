@@ -125,4 +125,17 @@ affinity: {}
 kube-prometheus-stack:
   enabled: true
   grafana:
+    adminUser: "admin"
     adminPassword: "password"
+
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: true
+    password: "password"
+  master:
+    resourcesPreset: "small"
+  replica:
+    replicaCount: 1
+    resourcesPreset: "small"
