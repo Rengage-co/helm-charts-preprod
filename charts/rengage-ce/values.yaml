@@ -157,3 +157,30 @@ minio:
     rootPassword: password
   persistence:
     size: 100Gi
+
+clickhouse:
+  enabled: true
+  auth:
+    username: default
+    password: password
+  shards: 1
+  persistence:
+    size: 100Gi
+  keeper:
+    persistence:
+      size: 30Gi
+
+kafka:
+  enabled: true
+  broker:
+    persistence:
+      size: 100Gi
+  controller:
+    persistence:
+      size: 30Gi
+  sasl:
+    client:
+      passwords:
+        - password
+      users:
+        - user1
