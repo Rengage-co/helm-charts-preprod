@@ -66,6 +66,39 @@ entries:
   rengage-ce:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-06-14T17:51:28.929818429Z"
+    dependencies:
+    - condition: kube-prometheus-stack.enabled
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 74.0.*
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 21.2.*
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.*
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.0.*
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.3.*
+    description: A Helm chart for deploying Rengage CE (Community Edition)
+    digest: 9c459ffd16ecec6de538d795a826621297bf1f3d414bc6a48cd534b137721fdf
+    home: https://rengage.ai/
+    icon: https://rengage.ai/img/logo.svg
+    name: rengage-ce
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.1.7/rengage-ce-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-06-14T17:33:57.626894653Z"
     dependencies:
     - condition: kube-prometheus-stack.enabled
@@ -251,4 +284,4 @@ entries:
     urls:
     - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.1.0/rengage-ce-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-14T17:33:57.626926923Z"
+generated: "2025-06-14T17:51:28.929855419Z"
