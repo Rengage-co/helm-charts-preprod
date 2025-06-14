@@ -125,15 +125,15 @@ affinity: {}
 kube-prometheus-stack:
   enabled: true
   grafana:
-    adminUser: "admin"
-    adminPassword: "password"
+    adminUser: admin
+    adminPassword: password
 
 redis:
   enabled: true
   architecture: standalone
   auth:
     enabled: true
-    password: "password"
+    password: password
   master:
     resourcesPreset: "small"
   replica:
@@ -144,8 +144,16 @@ elasticsearch:
   enabled: true
   replicas: 1
   secret:
-    password: "password"
+    password: password
   volumeClaimTemplate:
     resources:
       requests:
         storage: 100Gi
+
+minio:
+  enabled: true
+  auth:
+    rootUser: admin
+    rootPassword: password
+  persistence:
+    size: 100Gi
