@@ -14,8 +14,5 @@ dependencies:
 - name: clickhouse
   repository: https://charts.bitnami.com/bitnami
   version: 9.3.3
-- name: kafka
-  repository: https://charts.bitnami.com/bitnami
-  version: 32.2.15
-digest: sha256:52560d33c39ff5b378311c24ac42562f1218fb7df5751589959db3eae2261726
-generated: "2025-06-14T10:19:07.376357-07:00"
+digest: sha256:62b03d603350766f9b5df382c3f73011b5a63c996649913c3524fa5db0bdd67f
+generated: "2025-06-14T10:50:00.333157-07:00"
