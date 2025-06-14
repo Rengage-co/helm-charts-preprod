@@ -317,4 +317,38 @@ entries:
     urls:
     - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.1.0/rengage-ce-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-14T17:54:45.344719104Z"
+  rengage-ce-db:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-06-14T18:21:49.06589717Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 21.2.*
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.*
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.0.*
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.3.*
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 32.2.*
+    description: A Helm chart for deploying Rengage CE (Community Edition)
+    digest: d6094a898770ad56ccae5e6b07bd0e8de5d575aa6e0c406f8984e45be3b4b772
+    home: https://rengage.ai/
+    icon: https://rengage.ai/img/logo.svg
+    name: rengage-ce-db
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-db-0.1.9/rengage-ce-db-0.1.9.tgz
+    version: 0.1.9
+generated: "2025-06-14T18:21:49.065914252Z"
