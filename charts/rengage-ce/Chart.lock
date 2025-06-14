@@ -5,5 +5,8 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 21.2.3
-digest: sha256:8d086118ecd6a05145b76fbb9dcbfa93217b77d22ee8486e277aef879a4e623b
-generated: "2025-06-13T22:49:08.501449-07:00"
+- name: elasticsearch
+  repository: https://helm.elastic.co
+  version: 8.5.1
+digest: sha256:d0a2b7a6d75ffc587d9d8868b24df8f4f5ca5eb882b563a39685cbf0e1d555d6
+generated: "2025-06-14T08:52:28.387085-07:00"
