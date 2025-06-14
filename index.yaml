@@ -63,4 +63,20 @@ entries:
     urls:
     - https://github.com/Rengage-co/helm-charts-preprod/releases/download/prometheus-27.20.0/prometheus-27.20.0.tgz
     version: 27.20.0
-generated: "2025-06-07T03:02:23.636609287Z"
+  rengage-ce:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-06-14T05:12:06.85116147Z"
+    dependencies:
+    - condition: kube-prometheus-stack.enabled
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 74.0.*
+    description: A Helm chart for Kubernetes
+    digest: e3d4dea0516238491b788eb02b7f50afc2cdbe014568f4b3c26485fafcc78716
+    name: rengage-ce
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.1.0/rengage-ce-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-06-14T05:12:06.851171509Z"
