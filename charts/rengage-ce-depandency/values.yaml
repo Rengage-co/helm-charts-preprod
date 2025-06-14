@@ -184,3 +184,21 @@ kafka:
         - password
       users:
         - user1
+
+mysql:
+  enabled: true
+  auth:
+    rootPassword: password
+    username: mysql
+    password: password
+    replicationUser: mysql
+    replicationPassword: password
+  primary:
+    persistence:
+      size: 100Gi
+    resourcesPreset: "large"
+  secondary:
+    replicaCount: 1
+    persistence:
+      size: 100Gi
+    resourcesPreset: "large"

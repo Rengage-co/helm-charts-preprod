@@ -39,11 +39,15 @@ dependencies:
     version: "32.2.*"
     repository: https://charts.bitnami.com/bitnami
     condition: kafka.enabled
+  - name: mysql
+    version: "13.0.*"
+    repository: https://charts.bitnami.com/bitnami
+    condition: mysql.enabled
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.2.1
+version: 0.2.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
