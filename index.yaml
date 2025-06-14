@@ -66,6 +66,25 @@ entries:
   rengage-ce:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-06-14T05:55:09.219047801Z"
+    dependencies:
+    - condition: kube-prometheus-stack.enabled
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 74.0.*
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 21.2.*
+    description: A Helm chart for Kubernetes
+    digest: b27e471bda9f82d289b64e35ed1ebffd0defa5f0a15445adc4a9ff71e7b4e50d
+    name: rengage-ce
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.1.1/rengage-ce-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-06-14T05:12:06.85116147Z"
     dependencies:
     - condition: kube-prometheus-stack.enabled
@@ -79,4 +98,4 @@ entries:
     urls:
     - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.1.0/rengage-ce-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-14T05:12:06.851171509Z"
+generated: "2025-06-14T05:55:09.219058741Z"
