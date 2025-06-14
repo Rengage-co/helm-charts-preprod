@@ -1,7 +1,4 @@
 dependencies:
-- name: kube-prometheus-stack
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 74.0.0
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 21.2.3
@@ -11,8 +8,11 @@ dependencies:
 - name: minio
   repository: https://charts.bitnami.com/bitnami
   version: 17.0.4
+- name: clickhouse
+  repository: https://charts.bitnami.com/bitnami
+  version: 9.3.3
 - name: kafka
   repository: https://charts.bitnami.com/bitnami
   version: 32.2.15
-digest: sha256:05c7dc9668744e7af53c192cf239346394567ed7a6be19da3f67b6fa764ece2e
-generated: "2025-06-14T10:53:32.19242-07:00"
+digest: sha256:283c62a74140b26f8ea6f456521f5c5272054b215a4e062e9545f786b1d4aa5b
+generated: "2025-06-14T11:20:34.793644-07:00"
