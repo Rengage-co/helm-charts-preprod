@@ -66,6 +66,18 @@ entries:
   rengage-ce:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-06-14T23:30:06.075424571Z"
+    description: A Helm chart for deploying Rengage CE (Community Edition)
+    digest: 156cd42bd4bbde5e8406bc88c016e71510fd4e12b7884d0b428bb66c95c44536
+    home: https://rengage.ai/
+    icon: https://rengage.ai/img/logo.svg
+    name: rengage-ce
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.2.0/rengage-ce-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-06-14T18:24:30.940600385Z"
     dependencies:
     - condition: redis.enabled
@@ -350,4 +362,38 @@ entries:
     urls:
     - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.1.0/rengage-ce-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-14T18:24:30.940654206Z"
+  rengage-ce-depandency:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-06-14T23:30:06.284557086Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 21.2.*
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.*
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.0.*
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.3.*
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 32.2.*
+    description: A Helm chart for deploying Rengage CE (Community Edition) depandencies
+    digest: d01b359141f80324f0252a8104327f4f6b8e60db602aab4cc138e4a4e0bcdb85
+    home: https://rengage.ai/
+    icon: https://rengage.ai/img/logo.svg
+    name: rengage-ce-depandency
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-depandency-0.2.1/rengage-ce-depandency-0.2.1.tgz
+    version: 0.2.1
+generated: "2025-06-14T23:30:06.284619783Z"
