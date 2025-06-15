@@ -17,7 +17,7 @@ image:
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
-fullnameOverride: rengage
+fullnameOverride: ""
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
@@ -130,6 +130,7 @@ affinity: {}
 
 redis:
   enabled: true
+  fullnameOverride: redis
   architecture: standalone
   auth:
     enabled: true
@@ -152,6 +153,7 @@ elasticsearch:
 
 minio:
   enabled: true
+  fullnameOverride: minio
   auth:
     rootUser: admin
     rootPassword: password
@@ -160,6 +162,7 @@ minio:
 
 clickhouse:
   enabled: true
+  fullnameOverride: clickhouse
   auth:
     username: default
     password: password
@@ -172,6 +175,7 @@ clickhouse:
 
 kafka:
   enabled: true
+  fullnameOverride: kafka
   broker:
     persistence:
       size: 100Gi
@@ -187,6 +191,7 @@ kafka:
 
 mysql:
   enabled: true
+  fullnameOverride: mysql
   auth:
     rootPassword: password
     username: mysql
