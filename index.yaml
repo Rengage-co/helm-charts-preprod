@@ -365,6 +365,43 @@ entries:
   rengage-ce-depandency:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-06-15T00:25:48.371374786Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 21.2.*
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.*
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.0.*
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.3.*
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 32.2.*
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.0.*
+    description: A Helm chart for deploying Rengage CE (Community Edition) depandencies
+    digest: 4b99152db5d8b32f652165b1c9053d5163d9beb48f2c22de016bc5236f30607c
+    home: https://rengage.ai/
+    icon: https://rengage.ai/img/logo.svg
+    name: rengage-ce-depandency
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-depandency-0.2.3/rengage-ce-depandency-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-06-14T23:49:03.088024075Z"
     dependencies:
     - condition: redis.enabled
@@ -433,4 +470,4 @@ entries:
     urls:
     - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-depandency-0.2.1/rengage-ce-depandency-0.2.1.tgz
     version: 0.2.1
-generated: "2025-06-14T23:49:03.088061946Z"
+generated: "2025-06-15T00:25:48.37141493Z"
