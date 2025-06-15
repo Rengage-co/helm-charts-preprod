@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "rengage-ce.fullname" . }}
+  name: {{ printf "%s-nginx" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
   {{- with .Values.nginx.ingress.annotations }}

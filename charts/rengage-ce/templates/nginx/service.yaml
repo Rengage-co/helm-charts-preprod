@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "rengage-ce.fullname" . }}
+  name: {{ printf "%s-nginx" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:

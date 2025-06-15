@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "rengage-ce.fullname" . }}
+  name: {{ printf "%s-nginx" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "rengage-ce.fullname" . }}
+    name: {{ printf "%s-nginx" (include "rengage-ce.fullname" .) }}
   minReplicas: {{ .Values.nginx.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.nginx.autoscaling.maxReplicas }}
   metrics:
