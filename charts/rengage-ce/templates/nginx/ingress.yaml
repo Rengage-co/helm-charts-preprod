@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "rengage-ce.fullname" $ }}
+                name: {{ printf "%s-nginx" (include "rengage-ce.fullname" $) }}
                 port:
                   number: {{ $.Values.nginx.service.port }}
           {{- end }}
