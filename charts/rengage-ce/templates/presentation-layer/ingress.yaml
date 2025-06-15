@@ -1,0 +1,43 @@
+{{- if .Values.presentation-layer.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-presentation-layer" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+  {{- with .Values.presentation-layer.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.presentation-layer.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.presentation-layer.ingress.tls }}
+  tls:
+    {{- range .Values.presentation-layer.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.presentation-layer.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ printf "%s-presentation-layer" (include "rengage-ce.fullname" $) }}
+                port:
+                  number: {{ $.Values.presentation-layer.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

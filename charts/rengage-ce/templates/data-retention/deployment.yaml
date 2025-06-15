@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-data-retention" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.data-retention.autoscaling.enabled }}
+  replicas: {{ .Values.data-retention.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.data-retention.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.data-retention.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.data-retention.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.data-retention.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.data-retention.securityContext | nindent 12 }}
+          image: "{{ .Values.data-retention.image.repository }}:{{ .Values.data-retention.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.data-retention.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.data-retention.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.data-retention.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.data-retention.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.data-retention.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.data-retention.resources | nindent 12 }}
+          {{- with .Values.data-retention.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.data-retention.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

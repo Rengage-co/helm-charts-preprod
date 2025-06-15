@@ -1,0 +1,43 @@
+{{- if .Values.ingest-webhook.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-ingest-webhook" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+  {{- with .Values.ingest-webhook.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.ingest-webhook.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.ingest-webhook.ingress.tls }}
+  tls:
+    {{- range .Values.ingest-webhook.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingest-webhook.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ printf "%s-ingest-webhook" (include "rengage-ce.fullname" $) }}
+                port:
+                  number: {{ $.Values.ingest-webhook.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

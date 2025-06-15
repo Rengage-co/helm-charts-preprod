@@ -1,0 +1,43 @@
+{{- if .Values.template.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-template" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+  {{- with .Values.template.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.template.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.template.ingress.tls }}
+  tls:
+    {{- range .Values.template.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.template.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ printf "%s-template" (include "rengage-ce.fullname" $) }}
+                port:
+                  number: {{ $.Values.template.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

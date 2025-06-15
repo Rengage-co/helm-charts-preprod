@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-ingest-webhook" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.ingest-webhook.autoscaling.enabled }}
+  replicas: {{ .Values.ingest-webhook.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.ingest-webhook.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.ingest-webhook.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.ingest-webhook.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.ingest-webhook.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.ingest-webhook.securityContext | nindent 12 }}
+          image: "{{ .Values.ingest-webhook.image.repository }}:{{ .Values.ingest-webhook.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.ingest-webhook.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.ingest-webhook.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.ingest-webhook.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.ingest-webhook.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.ingest-webhook.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.ingest-webhook.resources | nindent 12 }}
+          {{- with .Values.ingest-webhook.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.ingest-webhook.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

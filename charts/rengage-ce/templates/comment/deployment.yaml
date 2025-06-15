@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-comment" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.comment.autoscaling.enabled }}
+  replicas: {{ .Values.comment.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.comment.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.comment.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.comment.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.comment.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.comment.securityContext | nindent 12 }}
+          image: "{{ .Values.comment.image.repository }}:{{ .Values.comment.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.comment.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.comment.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.comment.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.comment.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.comment.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.comment.resources | nindent 12 }}
+          {{- with .Values.comment.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.comment.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

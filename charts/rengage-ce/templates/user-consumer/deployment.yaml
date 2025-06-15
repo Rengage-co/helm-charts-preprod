@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-user-consumer" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.user-consumer.autoscaling.enabled }}
+  replicas: {{ .Values.user-consumer.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.user-consumer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.user-consumer.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.user-consumer.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.user-consumer.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.user-consumer.securityContext | nindent 12 }}
+          image: "{{ .Values.user-consumer.image.repository }}:{{ .Values.user-consumer.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.user-consumer.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.user-consumer.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.user-consumer.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.user-consumer.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.user-consumer.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.user-consumer.resources | nindent 12 }}
+          {{- with .Values.user-consumer.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.user-consumer.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

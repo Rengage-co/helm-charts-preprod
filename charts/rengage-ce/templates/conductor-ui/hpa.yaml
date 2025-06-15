@@ -1,0 +1,32 @@
+{{- if .Values.conductor-ui.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ printf "%s-conductor-ui" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ printf "%s-conductor-ui" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.conductor-ui.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.conductor-ui.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.conductor-ui.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.conductor-ui.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.conductor-ui.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.conductor-ui.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

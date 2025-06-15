@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-presentation-layer" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.presentation-layer.autoscaling.enabled }}
+  replicas: {{ .Values.presentation-layer.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.presentation-layer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.presentation-layer.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.presentation-layer.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.presentation-layer.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.presentation-layer.securityContext | nindent 12 }}
+          image: "{{ .Values.presentation-layer.image.repository }}:{{ .Values.presentation-layer.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.presentation-layer.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.presentation-layer.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.presentation-layer.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.presentation-layer.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.presentation-layer.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.presentation-layer.resources | nindent 12 }}
+          {{- with .Values.presentation-layer.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.presentation-layer.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

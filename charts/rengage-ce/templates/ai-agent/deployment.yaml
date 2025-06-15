@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-ai-agent" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.ai-agent.autoscaling.enabled }}
+  replicas: {{ .Values.ai-agent.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.ai-agent.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.ai-agent.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.ai-agent.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.ai-agent.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.ai-agent.securityContext | nindent 12 }}
+          image: "{{ .Values.ai-agent.image.repository }}:{{ .Values.ai-agent.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.ai-agent.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.ai-agent.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.ai-agent.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.ai-agent.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.ai-agent.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.ai-agent.resources | nindent 12 }}
+          {{- with .Values.ai-agent.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.ai-agent.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-conductor-ui" (include "rengage-ce.fullname" .) }}
+  labels:
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.conductor-ui.autoscaling.enabled }}
+  replicas: {{ .Values.conductor-ui.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.conductor-ui.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.conductor-ui.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.conductor-ui.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.conductor-ui.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.conductor-ui.securityContext | nindent 12 }}
+          image: "{{ .Values.conductor-ui.image.repository }}:{{ .Values.conductor-ui.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.conductor-ui.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.conductor-ui.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.conductor-ui.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.conductor-ui.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.conductor-ui.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.conductor-ui.resources | nindent 12 }}
+          {{- with .Values.conductor-ui.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.conductor-ui.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
