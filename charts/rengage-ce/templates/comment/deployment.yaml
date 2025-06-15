@@ -42,10 +42,14 @@ spec:
             - name: http
               containerPort: {{ .Values.comment.service.port }}
               protocol: TCP
+          {{- with .Values.comment.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.comment.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.comment.readinessProbe }}
           readinessProbe:
             {{- toYaml .Values.comment.readinessProbe | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.comment.resources | nindent 12 }}
           {{- with .Values.comment.volumeMounts }}

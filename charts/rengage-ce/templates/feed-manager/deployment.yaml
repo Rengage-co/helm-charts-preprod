@@ -42,10 +42,14 @@ spec:
             - name: http
               containerPort: {{ .Values.feedmanager.service.port }}
               protocol: TCP
+          {{- with .Values.feedmanager.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.feedmanager.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.feedmanager.readinessProbe }}
           readinessProbe:
             {{- toYaml .Values.feedmanager.readinessProbe | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.feedmanager.resources | nindent 12 }}
           {{- with .Values.feedmanager.volumeMounts }}

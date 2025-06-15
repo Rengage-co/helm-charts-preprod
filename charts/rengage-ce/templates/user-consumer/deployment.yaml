@@ -42,10 +42,14 @@ spec:
             - name: http
               containerPort: {{ .Values.userconsumer.service.port }}
               protocol: TCP
+          {{- with .Values.userconsumer.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.userconsumer.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.userconsumer.readinessProbe }}
           readinessProbe:
             {{- toYaml .Values.userconsumer.readinessProbe | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.userconsumer.resources | nindent 12 }}
           {{- with .Values.userconsumer.volumeMounts }}

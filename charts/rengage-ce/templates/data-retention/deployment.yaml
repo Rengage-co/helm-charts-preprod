@@ -42,10 +42,14 @@ spec:
             - name: http
               containerPort: {{ .Values.dataretention.service.port }}
               protocol: TCP
+          {{- with .Values.dataretention.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.dataretention.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.dataretention.readinessProbe }}
           readinessProbe:
             {{- toYaml .Values.dataretention.readinessProbe | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.dataretention.resources | nindent 12 }}
           {{- with .Values.dataretention.volumeMounts }}

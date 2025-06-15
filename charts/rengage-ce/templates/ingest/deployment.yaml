@@ -42,10 +42,14 @@ spec:
             - name: http
               containerPort: {{ .Values.ingest.service.port }}
               protocol: TCP
+          {{- with .Values.ingest.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.ingest.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.ingest.readinessProbe }}
           readinessProbe:
             {{- toYaml .Values.ingest.readinessProbe | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.ingest.resources | nindent 12 }}
           {{- with .Values.ingest.volumeMounts }}

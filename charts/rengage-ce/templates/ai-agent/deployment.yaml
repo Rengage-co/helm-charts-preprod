@@ -42,10 +42,14 @@ spec:
             - name: http
               containerPort: {{ .Values.aiagent.service.port }}
               protocol: TCP
+          {{- with .Values.aiagent.livenessProbe }}
           livenessProbe:
             {{- toYaml .Values.aiagent.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.aiagent.readinessProbe }}
           readinessProbe:
             {{- toYaml .Values.aiagent.readinessProbe | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.aiagent.resources | nindent 12 }}
           {{- with .Values.aiagent.volumeMounts }}
