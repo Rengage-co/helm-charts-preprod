@@ -1,21 +1,21 @@
-{{- if .Values.presentation-layer.ingress.enabled -}}
+{{- if .Values.presentationlayer.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ printf "%s-presentation-layer" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-presentationlayer" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
-  {{- with .Values.presentation-layer.ingress.annotations }}
+  {{- with .Values.presentationlayer.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with .Values.presentation-layer.ingress.className }}
+  {{- with .Values.presentationlayer.ingress.className }}
   ingressClassName: {{ . }}
   {{- end }}
-  {{- if .Values.presentation-layer.ingress.tls }}
+  {{- if .Values.presentationlayer.ingress.tls }}
   tls:
-    {{- range .Values.presentation-layer.ingress.tls }}
+    {{- range .Values.presentationlayer.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -24,7 +24,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.presentation-layer.ingress.hosts }}
+    {{- range .Values.presentationlayer.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -35,9 +35,9 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ printf "%s-presentation-layer" (include "rengage-ce.fullname" $) }}
+                name: {{ printf "%s-presentationlayer" (include "rengage-ce.fullname" $) }}
                 port:
-                  number: {{ $.Values.presentation-layer.service.port }}
+                  number: {{ $.Values.presentationlayer.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}

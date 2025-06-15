@@ -1,32 +1,32 @@
-{{- if .Values.ai-agent.autoscaling.enabled }}
+{{- if .Values.aiagent.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ printf "%s-ai-agent" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-aiagent" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ printf "%s-ai-agent" (include "rengage-ce.fullname" .) }}
-  minReplicas: {{ .Values.ai-agent.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.ai-agent.autoscaling.maxReplicas }}
+    name: {{ printf "%s-aiagent" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.aiagent.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.aiagent.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.ai-agent.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.aiagent.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ .Values.ai-agent.autoscaling.targetCPUUtilizationPercentage }}
+          averageUtilization: {{ .Values.aiagent.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.ai-agent.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.aiagent.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: {{ .Values.ai-agent.autoscaling.targetMemoryUtilizationPercentage }}
+          averageUtilization: {{ .Values.aiagent.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}

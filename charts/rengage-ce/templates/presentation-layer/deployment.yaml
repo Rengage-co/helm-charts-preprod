@@ -1,58 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-presentation-layer" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-presentationlayer" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.presentation-layer.autoscaling.enabled }}
-  replicas: {{ .Values.presentation-layer.replicaCount }}
+  {{- if not .Values.presentationlayer.autoscaling.enabled }}
+  replicas: {{ .Values.presentationlayer.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.presentation-layer.podAnnotations }}
+      {{- with .Values.presentationlayer.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "rengage-ce.labels" . | nindent 8 }}
-        {{- with .Values.presentation-layer.podLabels }}
+        {{- with .Values.presentationlayer.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.presentation-layer.imagePullSecrets }}
+      {{- with .Values.presentationlayer.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.presentation-layer.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.presentationlayer.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.presentation-layer.securityContext | nindent 12 }}
-          image: "{{ .Values.presentation-layer.image.repository }}:{{ .Values.presentation-layer.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.presentation-layer.image.pullPolicy }}
+            {{- toYaml .Values.presentationlayer.securityContext | nindent 12 }}
+          image: "{{ .Values.presentationlayer.image.repository }}:{{ .Values.presentationlayer.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.presentationlayer.image.pullPolicy }}
           env:
-            {{- toYaml .Values.presentation-layer.env | nindent 12 }}
+            {{- toYaml .Values.presentationlayer.env | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.presentation-layer.service.port }}
+              containerPort: {{ .Values.presentationlayer.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.presentation-layer.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.presentationlayer.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.presentation-layer.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.presentationlayer.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.presentation-layer.resources | nindent 12 }}
-          {{- with .Values.presentation-layer.volumeMounts }}
+            {{- toYaml .Values.presentationlayer.resources | nindent 12 }}
+          {{- with .Values.presentationlayer.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.presentation-layer.volumes }}
+      {{- with .Values.presentationlayer.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}

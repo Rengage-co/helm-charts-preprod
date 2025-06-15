@@ -1,21 +1,21 @@
-{{- if .Values.data-retention.ingress.enabled -}}
+{{- if .Values.dataretention.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ printf "%s-data-retention" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-dataretention" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
-  {{- with .Values.data-retention.ingress.annotations }}
+  {{- with .Values.dataretention.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with .Values.data-retention.ingress.className }}
+  {{- with .Values.dataretention.ingress.className }}
   ingressClassName: {{ . }}
   {{- end }}
-  {{- if .Values.data-retention.ingress.tls }}
+  {{- if .Values.dataretention.ingress.tls }}
   tls:
-    {{- range .Values.data-retention.ingress.tls }}
+    {{- range .Values.dataretention.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -24,7 +24,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.data-retention.ingress.hosts }}
+    {{- range .Values.dataretention.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -35,9 +35,9 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ printf "%s-data-retention" (include "rengage-ce.fullname" $) }}
+                name: {{ printf "%s-dataretention" (include "rengage-ce.fullname" $) }}
                 port:
-                  number: {{ $.Values.data-retention.service.port }}
+                  number: {{ $.Values.dataretention.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}

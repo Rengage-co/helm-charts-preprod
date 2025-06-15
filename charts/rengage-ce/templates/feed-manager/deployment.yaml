@@ -1,58 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-feed-manager" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-feedmanager" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.feed-manager.autoscaling.enabled }}
-  replicas: {{ .Values.feed-manager.replicaCount }}
+  {{- if not .Values.feedmanager.autoscaling.enabled }}
+  replicas: {{ .Values.feedmanager.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.feed-manager.podAnnotations }}
+      {{- with .Values.feedmanager.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "rengage-ce.labels" . | nindent 8 }}
-        {{- with .Values.feed-manager.podLabels }}
+        {{- with .Values.feedmanager.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.feed-manager.imagePullSecrets }}
+      {{- with .Values.feedmanager.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.feed-manager.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.feedmanager.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.feed-manager.securityContext | nindent 12 }}
-          image: "{{ .Values.feed-manager.image.repository }}:{{ .Values.feed-manager.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.feed-manager.image.pullPolicy }}
+            {{- toYaml .Values.feedmanager.securityContext | nindent 12 }}
+          image: "{{ .Values.feedmanager.image.repository }}:{{ .Values.feedmanager.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.feedmanager.image.pullPolicy }}
           env:
-            {{- toYaml .Values.feed-manager.env | nindent 12 }}
+            {{- toYaml .Values.feedmanager.env | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.feed-manager.service.port }}
+              containerPort: {{ .Values.feedmanager.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.feed-manager.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.feedmanager.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.feed-manager.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.feedmanager.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.feed-manager.resources | nindent 12 }}
-          {{- with .Values.feed-manager.volumeMounts }}
+            {{- toYaml .Values.feedmanager.resources | nindent 12 }}
+          {{- with .Values.feedmanager.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.feed-manager.volumes }}
+      {{- with .Values.feedmanager.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}

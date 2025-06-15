@@ -1,32 +1,32 @@
-{{- if .Values.conductor-ui.autoscaling.enabled }}
+{{- if .Values.conductorui.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ printf "%s-conductor-ui" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-conductorui" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ printf "%s-conductor-ui" (include "rengage-ce.fullname" .) }}
-  minReplicas: {{ .Values.conductor-ui.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.conductor-ui.autoscaling.maxReplicas }}
+    name: {{ printf "%s-conductorui" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.conductorui.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.conductorui.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.conductor-ui.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.conductorui.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ .Values.conductor-ui.autoscaling.targetCPUUtilizationPercentage }}
+          averageUtilization: {{ .Values.conductorui.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.conductor-ui.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.conductorui.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: {{ .Values.conductor-ui.autoscaling.targetMemoryUtilizationPercentage }}
+          averageUtilization: {{ .Values.conductorui.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}

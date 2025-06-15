@@ -1,58 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-conductor-ui" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-conductorui" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.conductor-ui.autoscaling.enabled }}
-  replicas: {{ .Values.conductor-ui.replicaCount }}
+  {{- if not .Values.conductorui.autoscaling.enabled }}
+  replicas: {{ .Values.conductorui.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.conductor-ui.podAnnotations }}
+      {{- with .Values.conductorui.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "rengage-ce.labels" . | nindent 8 }}
-        {{- with .Values.conductor-ui.podLabels }}
+        {{- with .Values.conductorui.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.conductor-ui.imagePullSecrets }}
+      {{- with .Values.conductorui.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.conductor-ui.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.conductorui.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.conductor-ui.securityContext | nindent 12 }}
-          image: "{{ .Values.conductor-ui.image.repository }}:{{ .Values.conductor-ui.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.conductor-ui.image.pullPolicy }}
+            {{- toYaml .Values.conductorui.securityContext | nindent 12 }}
+          image: "{{ .Values.conductorui.image.repository }}:{{ .Values.conductorui.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.conductorui.image.pullPolicy }}
           env:
-            {{- toYaml .Values.conductor-ui.env | nindent 12 }}
+            {{- toYaml .Values.conductorui.env | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.conductor-ui.service.port }}
+              containerPort: {{ .Values.conductorui.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.conductor-ui.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.conductorui.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.conductor-ui.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.conductorui.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.conductor-ui.resources | nindent 12 }}
-          {{- with .Values.conductor-ui.volumeMounts }}
+            {{- toYaml .Values.conductorui.resources | nindent 12 }}
+          {{- with .Values.conductorui.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.conductor-ui.volumes }}
+      {{- with .Values.conductorui.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}

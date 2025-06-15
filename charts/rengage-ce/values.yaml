@@ -130,7 +130,7 @@ nginx:
 #     adminUser: admin
 #     adminPassword: password
 
-ai-agent:
+aiagent:
   replicaCount: 1
   image:
     repository: nginx
@@ -262,7 +262,7 @@ conductor:
   volumes: []
   volumeMounts: []
 
-conductor-consumer:
+conductorconsumer:
   replicaCount: 1
   image:
     repository: nginx
@@ -295,7 +295,7 @@ conductor-consumer:
   volumes: []
   volumeMounts: []
 
-conductor-ui:
+conductorui:
   replicaCount: 1
   image:
     repository: nginx
@@ -361,7 +361,7 @@ consumer:
   volumes: []
   volumeMounts: []
 
-data-retention:
+dataretention:
   replicaCount: 1
   image:
     repository: nginx
@@ -394,7 +394,7 @@ data-retention:
   volumes: []
   volumeMounts: []
 
-feed-manager:
+feedmanager:
   replicaCount: 2
   image:
     repository: nginx
@@ -493,7 +493,7 @@ ingest:
   volumes: []
   volumeMounts: []
 
-ingest-webhook:
+ingestwebhook:
   replicaCount: 1
   image:
     repository: nginx
@@ -526,7 +526,7 @@ ingest-webhook:
   volumes: []
   volumeMounts: []
 
-presentation-layer:
+presentationlayer:
   replicaCount: 2
   image:
     repository: nginx
@@ -592,7 +592,7 @@ template:
   volumes: []
   volumeMounts: []
 
-user-consumer:
+userconsumer:
   replicaCount: 1
   image:
     repository: nginx

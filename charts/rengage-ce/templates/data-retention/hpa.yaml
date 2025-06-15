@@ -1,32 +1,32 @@
-{{- if .Values.data-retention.autoscaling.enabled }}
+{{- if .Values.dataretention.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ printf "%s-data-retention" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-dataretention" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ printf "%s-data-retention" (include "rengage-ce.fullname" .) }}
-  minReplicas: {{ .Values.data-retention.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.data-retention.autoscaling.maxReplicas }}
+    name: {{ printf "%s-dataretention" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.dataretention.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.dataretention.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.data-retention.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.dataretention.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ .Values.data-retention.autoscaling.targetCPUUtilizationPercentage }}
+          averageUtilization: {{ .Values.dataretention.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.data-retention.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.dataretention.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: {{ .Values.data-retention.autoscaling.targetMemoryUtilizationPercentage }}
+          averageUtilization: {{ .Values.dataretention.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}

@@ -1,58 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-user-consumer" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-userconsumer" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.user-consumer.autoscaling.enabled }}
-  replicas: {{ .Values.user-consumer.replicaCount }}
+  {{- if not .Values.userconsumer.autoscaling.enabled }}
+  replicas: {{ .Values.userconsumer.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.user-consumer.podAnnotations }}
+      {{- with .Values.userconsumer.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "rengage-ce.labels" . | nindent 8 }}
-        {{- with .Values.user-consumer.podLabels }}
+        {{- with .Values.userconsumer.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.user-consumer.imagePullSecrets }}
+      {{- with .Values.userconsumer.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.user-consumer.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.userconsumer.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.user-consumer.securityContext | nindent 12 }}
-          image: "{{ .Values.user-consumer.image.repository }}:{{ .Values.user-consumer.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.user-consumer.image.pullPolicy }}
+            {{- toYaml .Values.userconsumer.securityContext | nindent 12 }}
+          image: "{{ .Values.userconsumer.image.repository }}:{{ .Values.userconsumer.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.userconsumer.image.pullPolicy }}
           env:
-            {{- toYaml .Values.user-consumer.env | nindent 12 }}
+            {{- toYaml .Values.userconsumer.env | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.user-consumer.service.port }}
+              containerPort: {{ .Values.userconsumer.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.user-consumer.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.userconsumer.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.user-consumer.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.userconsumer.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.user-consumer.resources | nindent 12 }}
-          {{- with .Values.user-consumer.volumeMounts }}
+            {{- toYaml .Values.userconsumer.resources | nindent 12 }}
+          {{- with .Values.userconsumer.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.user-consumer.volumes }}
+      {{- with .Values.userconsumer.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}

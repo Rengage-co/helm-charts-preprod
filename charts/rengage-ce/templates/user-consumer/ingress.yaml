@@ -1,21 +1,21 @@
-{{- if .Values.user-consumer.ingress.enabled -}}
+{{- if .Values.userconsumer.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ printf "%s-user-consumer" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-userconsumer" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
-  {{- with .Values.user-consumer.ingress.annotations }}
+  {{- with .Values.userconsumer.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with .Values.user-consumer.ingress.className }}
+  {{- with .Values.userconsumer.ingress.className }}
   ingressClassName: {{ . }}
   {{- end }}
-  {{- if .Values.user-consumer.ingress.tls }}
+  {{- if .Values.userconsumer.ingress.tls }}
   tls:
-    {{- range .Values.user-consumer.ingress.tls }}
+    {{- range .Values.userconsumer.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -24,7 +24,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.user-consumer.ingress.hosts }}
+    {{- range .Values.userconsumer.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -35,9 +35,9 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ printf "%s-user-consumer" (include "rengage-ce.fullname" $) }}
+                name: {{ printf "%s-userconsumer" (include "rengage-ce.fullname" $) }}
                 port:
-                  number: {{ $.Values.user-consumer.service.port }}
+                  number: {{ $.Values.userconsumer.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}

@@ -1,21 +1,21 @@
-{{- if .Values.conductor-ui.ingress.enabled -}}
+{{- if .Values.conductorui.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ printf "%s-conductor-ui" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-conductorui" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
-  {{- with .Values.conductor-ui.ingress.annotations }}
+  {{- with .Values.conductorui.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with .Values.conductor-ui.ingress.className }}
+  {{- with .Values.conductorui.ingress.className }}
   ingressClassName: {{ . }}
   {{- end }}
-  {{- if .Values.conductor-ui.ingress.tls }}
+  {{- if .Values.conductorui.ingress.tls }}
   tls:
-    {{- range .Values.conductor-ui.ingress.tls }}
+    {{- range .Values.conductorui.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -24,7 +24,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.conductor-ui.ingress.hosts }}
+    {{- range .Values.conductorui.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -35,9 +35,9 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ printf "%s-conductor-ui" (include "rengage-ce.fullname" $) }}
+                name: {{ printf "%s-conductorui" (include "rengage-ce.fullname" $) }}
                 port:
-                  number: {{ $.Values.conductor-ui.service.port }}
+                  number: {{ $.Values.conductorui.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}

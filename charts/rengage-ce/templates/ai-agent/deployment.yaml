@@ -1,58 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-ai-agent" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-aiagent" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.ai-agent.autoscaling.enabled }}
-  replicas: {{ .Values.ai-agent.replicaCount }}
+  {{- if not .Values.aiagent.autoscaling.enabled }}
+  replicas: {{ .Values.aiagent.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.ai-agent.podAnnotations }}
+      {{- with .Values.aiagent.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "rengage-ce.labels" . | nindent 8 }}
-        {{- with .Values.ai-agent.podLabels }}
+        {{- with .Values.aiagent.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.ai-agent.imagePullSecrets }}
+      {{- with .Values.aiagent.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.ai-agent.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.aiagent.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.ai-agent.securityContext | nindent 12 }}
-          image: "{{ .Values.ai-agent.image.repository }}:{{ .Values.ai-agent.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.ai-agent.image.pullPolicy }}
+            {{- toYaml .Values.aiagent.securityContext | nindent 12 }}
+          image: "{{ .Values.aiagent.image.repository }}:{{ .Values.aiagent.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.aiagent.image.pullPolicy }}
           env:
-            {{- toYaml .Values.ai-agent.env | nindent 12 }}
+            {{- toYaml .Values.aiagent.env | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.ai-agent.service.port }}
+              containerPort: {{ .Values.aiagent.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.ai-agent.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.aiagent.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.ai-agent.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.aiagent.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.ai-agent.resources | nindent 12 }}
-          {{- with .Values.ai-agent.volumeMounts }}
+            {{- toYaml .Values.aiagent.resources | nindent 12 }}
+          {{- with .Values.aiagent.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.ai-agent.volumes }}
+      {{- with .Values.aiagent.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}

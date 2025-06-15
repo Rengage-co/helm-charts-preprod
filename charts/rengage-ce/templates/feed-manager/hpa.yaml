@@ -1,32 +1,32 @@
-{{- if .Values.feed-manager.autoscaling.enabled }}
+{{- if .Values.feedmanager.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ printf "%s-feed-manager" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-feedmanager" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ printf "%s-feed-manager" (include "rengage-ce.fullname" .) }}
-  minReplicas: {{ .Values.feed-manager.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.feed-manager.autoscaling.maxReplicas }}
+    name: {{ printf "%s-feedmanager" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.feedmanager.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.feedmanager.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.feed-manager.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.feedmanager.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ .Values.feed-manager.autoscaling.targetCPUUtilizationPercentage }}
+          averageUtilization: {{ .Values.feedmanager.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.feed-manager.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.feedmanager.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: {{ .Values.feed-manager.autoscaling.targetMemoryUtilizationPercentage }}
+          averageUtilization: {{ .Values.feedmanager.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}

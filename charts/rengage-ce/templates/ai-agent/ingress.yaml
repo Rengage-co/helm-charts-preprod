@@ -1,21 +1,21 @@
-{{- if .Values.ai-agent.ingress.enabled -}}
+{{- if .Values.aiagent.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ printf "%s-ai-agent" (include "rengage-ce.fullname" .) }}
+  name: {{ printf "%s-aiagent" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
-  {{- with .Values.ai-agent.ingress.annotations }}
+  {{- with .Values.aiagent.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with .Values.ai-agent.ingress.className }}
+  {{- with .Values.aiagent.ingress.className }}
   ingressClassName: {{ . }}
   {{- end }}
-  {{- if .Values.ai-agent.ingress.tls }}
+  {{- if .Values.aiagent.ingress.tls }}
   tls:
-    {{- range .Values.ai-agent.ingress.tls }}
+    {{- range .Values.aiagent.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -24,7 +24,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ai-agent.ingress.hosts }}
+    {{- range .Values.aiagent.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -35,9 +35,9 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ printf "%s-ai-agent" (include "rengage-ce.fullname" $) }}
+                name: {{ printf "%s-aiagent" (include "rengage-ce.fullname" $) }}
                 port:
-                  number: {{ $.Values.ai-agent.service.port }}
+                  number: {{ $.Values.aiagent.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}
