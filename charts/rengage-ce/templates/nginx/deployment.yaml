@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "rengage-ce.fullname" . }}
+  name: {{ printf "%s-nginx" (include "rengage-ce.fullname" .) }}
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
@@ -36,6 +36,8 @@ spec:
             {{- toYaml .Values.nginx.securityContext | nindent 12 }}
           image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.nginx.env | nindent 12 }}
           ports:
             - name: http
               containerPort: {{ .Values.nginx.service.port }}
