@@ -11,10 +11,15 @@ If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
 rengage` to see the charts.
 
-To install the rengage chart:
+To install the rengage-ce-depandency chart:
 
-    helm install my-rengage rengage-preprod/rengage
+    helm install my-rengage-ce-dep rengage-preprod/rengage-ce-depandency
+
+To install the rengage-ce chart:
+
+    helm install my-rengage-ce rengage-preprod/rengage-ce
 
 To uninstall the chart:
 
-    helm uninstall my-rengage
+    helm uninstall my-rengage-ce
+    helm uninstall my-rengage-ce-dep
