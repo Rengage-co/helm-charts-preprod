@@ -30,7 +30,7 @@ nginx:
     # This sets the pull policy for images.
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "1.16.0"
   env: []
     # - name: ENV1
     #   value: "Value1"
