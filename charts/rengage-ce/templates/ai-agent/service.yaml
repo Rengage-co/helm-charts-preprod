@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: {{ printf "%s-aiagent" (include "rengage-ce.fullname" .) }}
   labels:
+    app.kubernetes.io/name: {{ printf "%s-aiagent" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.aiagent.service.type }}
@@ -12,4 +14,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "rengage-ce.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ printf "%s-aiagent" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

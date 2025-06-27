@@ -4,6 +4,8 @@ kind: Ingress
 metadata:
   name: {{ printf "%s-conductorconsumer" (include "rengage-ce.fullname" .) }}
   labels:
+    app.kubernetes.io/name: {{ printf "%s-conductorconsumer" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "rengage-ce.labels" . | nindent 4 }}
   {{- with .Values.conductorconsumer.ingress.annotations }}
   annotations:

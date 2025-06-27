@@ -4,6 +4,8 @@ kind: Ingress
 metadata:
   name: {{ printf "%s-feedmanager" (include "rengage-ce.fullname" .) }}
   labels:
+    app.kubernetes.io/name: {{ printf "%s-feedmanager" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "rengage-ce.labels" . | nindent 4 }}
   {{- with .Values.feedmanager.ingress.annotations }}
   annotations:

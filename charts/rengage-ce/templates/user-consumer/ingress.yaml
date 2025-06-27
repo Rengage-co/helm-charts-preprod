@@ -4,6 +4,8 @@ kind: Ingress
 metadata:
   name: {{ printf "%s-userconsumer" (include "rengage-ce.fullname" .) }}
   labels:
+    app.kubernetes.io/name: {{ printf "%s-userconsumer" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "rengage-ce.labels" . | nindent 4 }}
   {{- with .Values.userconsumer.ingress.annotations }}
   annotations:
