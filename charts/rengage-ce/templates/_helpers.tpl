@@ -46,7 +46,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "rengage-ce.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "rengage-ce.name" . }}
+app.kubernetes.io/name: {{ printf "%s-%s" (include "rengage-ce.name" .) .Suffix }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 

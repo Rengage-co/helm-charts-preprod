@@ -5,9 +5,10 @@ metadata:
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
+  {{- $ctx := dict "Release" .Release "Suffix" "nginx" "Root" . -}}
   selector:
     matchLabels:
-      {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
+      {{- include "rengage-ce.selectorLabels" $ctx | nindent 6 }}
   template:
     metadata:
       {{- with .Values.nginx.podAnnotations }}
