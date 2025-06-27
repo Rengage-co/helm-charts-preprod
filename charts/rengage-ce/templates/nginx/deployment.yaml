@@ -5,21 +5,6 @@ metadata:
   labels:
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
-  initContainers:
-        - name: countdown
-          image: busybox
-          command:
-            - sh
-            - -c
-            - |
-              for i in 3 2 1; do
-                echo "Countdown: $i"
-                sleep 1
-              done
-              echo "Init container complete."
-  {{- if not .Values.nginx.autoscaling.enabled }}
-  replicas: {{ .Values.nginx.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "rengage-ce.selectorLabels" . | nindent 6 }}
@@ -35,6 +20,10 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      initContainers:
+        - name: init-myservice
+          image: busybox
+          command: ['sh', '-c', 'echo Initializing...; sleep 5']
       {{- with .Values.nginx.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
