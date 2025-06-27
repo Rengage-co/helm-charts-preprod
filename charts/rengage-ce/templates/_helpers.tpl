@@ -35,7 +35,6 @@ Common labels
 */}}
 {{- define "rengage-ce.labels" -}}
 helm.sh/chart: {{ include "rengage-ce.chart" . }}
-{{ include "rengage-ce.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

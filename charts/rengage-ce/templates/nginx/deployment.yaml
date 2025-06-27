@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: {{ printf "%s-nginx" (include "rengage-ce.fullname" .) }}
   labels:
+    app.kubernetes.io/name: {{ printf "%s-nginx" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "rengage-ce.labels" . | nindent 4 }}
 spec:
   selector:
@@ -18,11 +20,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ printf "%s-nginx" (include "rengage-ce.name" .) }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        helm.sh/chart: {{ include "rengage-ce.chart" . }}
-        {{- if .Chart.AppVersion }}
-        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-        {{- end }}
-        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        {{- include "rengage-ce.labels" . | nindent 8 }}
         {{- with .Values.nginx.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
