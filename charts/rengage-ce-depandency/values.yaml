@@ -100,6 +100,8 @@ mysql:
     password: password
     replicationUser: mysql
     replicationPassword: password
+    createDatabase: true
+    database: presentationlayer
   primary:
     persistence:
       size: 100Gi
