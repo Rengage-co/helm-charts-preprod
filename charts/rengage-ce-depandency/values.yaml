@@ -35,7 +35,7 @@ redis:
   fullnameOverride: redis
   architecture: standalone
   auth:
-    enabled: true
+    enabled: false
     password: password
   master:
     resourcesPreset: "small"
