@@ -46,12 +46,6 @@ helm uninstall my-rengage-ce-dep
 
 Customers can customize their deployment by providing their own values file or using `--set` flags with Helm. Below are the main configuration areas for `rengage-ce`:
 
-## Global Settings
-
-- `nameOverride`, `fullnameOverride`: Override chart names.
-- `serviceAccount`: Control service account creation and usage.
-- `nodeSelector`, `tolerations`, `affinity`: Pod scheduling.
-
 ## Microservice Configuration
 
 Each microservice (e.g., `nginx`, `aiagent`, `cache`, `comment`, `conductor`, `consumer`, `conductorconsumer`, `conductorui`, `dataretention`, `feedmanager`, `frontend`, `ingest`, `ingestwebhook`, `presentationlayer`, `template`, `userconsumer`) has its own section with these options:
@@ -105,10 +99,6 @@ nginx:
         hosts:
           - my-nginx.example.com
 ```
-
-## Prometheus Monitoring
-
-See the Prometheus chart's README for configuration options, including RBAC, storage, and alerting.
 
 ## Dependency Chart
 
