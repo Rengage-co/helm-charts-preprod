@@ -444,7 +444,7 @@ frontend:
     port: 80
   ingress:
     enabled: true
-    className: ""
+    className: "nginx"
     annotations: {}
     hosts:
       - host: demo.rengage.net
