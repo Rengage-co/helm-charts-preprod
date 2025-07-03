@@ -556,8 +556,14 @@ presentationlayer:
   readinessProbe: {}
   autoscaling:
     enabled: false
-  volumes: []
-  volumeMounts: []
+  volumes:
+    - configMap:
+        defaultMode: 420
+        name: pl-google-app-credential
+      name: google-app-credential
+  volumeMounts:
+    - mountPath: /google-app-credential
+      name: google-app-credential
 
 template:
   replicaCount: 1
