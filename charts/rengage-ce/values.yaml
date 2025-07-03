@@ -572,11 +572,11 @@ presentationlayer:
     - name: spring.kafka.isConfluent
       value: 'true'
     - name: AGENT_API_URL
-      value: 'http://agent-service:3000/api/agent/run'
+      value: 'http://rengage-aiagent:3000/api/agent/run'
     - name: AWSEVENTBRIDGE_LAMBDAARNSUFFIX
       value: prod
     - name: CONDUCTOR_SERVERURL
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: GOOGLE_APPLICATION_CREDENTIALS
       value: /google-app-credential/service_account.json
     - name: timestream.database
