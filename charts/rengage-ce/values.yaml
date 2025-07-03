@@ -529,10 +529,111 @@ ingestwebhook:
 presentationlayer:
   replicaCount: 2
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/presentation-layer
     pullPolicy: IfNotPresent
-    tag: ""
-  env: []
+    tag: "0c047efa"
+  env:
+    - name: CACHE_SERVICE_URL
+      value: 'http://rengage-cache:8080/api/cache/clearColumn'
+    - name: CONDUCTOR_CLICKHOUSE_APIENDPOINT
+      value: 'http://rengage-cache:8080/api/cache/get'
+    - name: CONDUCTOR_CLICKHOUSE_AUTHORIZATION
+      value: Basic TO_BE_ADDED
+    - name: DATABASE_PASSWORD
+      value: password
+    - name: DATABASE_URL
+      value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
+    - name: DATABASE_USERNAME
+      value: root
+    - name: REDIS_HOST
+      value: redis-master
+    - name: REDIS_PORT
+      value: '6379'
+    - name: REDIS_SSL
+      value: 'true'
+    - name: SPRING_CACHE_TYPE
+      value: simple
+    - name: SPRING_DATA_REDIS_HOST
+      value: redis-master
+    - name: SPRING_DATA_REDIS_PORT
+      value: '6379'
+    - name: SPRING_DATA_REDIS_SSL
+      value: 'true'
+    - name: awsEventBridge.lambdaArnSuffix
+      value: prod
+    - name: bulkJobManager.type
+      value: eventBridgeLambda
+    - name: confluent.password
+      value: TO_BE_ADDED
+    - name: confluent.username
+      value: TO_BE_ADDED
+    - name: spring.kafka.bootstrap-servers
+      value: 'kafka:9092'
+    - name: spring.kafka.isConfluent
+      value: 'true'
+    - name: AGENT_API_URL
+      value: 'http://agent-service:3000/api/agent/run'
+    - name: AWSEVENTBRIDGE_LAMBDAARNSUFFIX
+      value: prod
+    - name: CONDUCTOR_SERVERURL
+      value: 'http://conductor-server:8080/api/'
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: /google-app-credential/service_account.json
+    - name: timestream.database
+      value: rengage-prod
+    - name: spring.data.redis.host
+      value: redis-master
+    - name: spring.data.redis.port
+      value: '6379'
+    - name: spring.data.redis.ssl
+      value: 'true'
+    - name: CLICKHOUSE_JDBCURL
+      value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
+    - name: CLICKHOUSE_USERNAME
+      value: default
+    - name: CLICKHOUSE_PASSWORD
+      value: password
+    - name: spring.kafka.isConfluent
+      value: 'true'
+    - name: service.email.sendGridApiKey
+      value: >-
+        SG.TO_BE_ADDED
+    - name: MILVUS_COLLECTION_NAME
+      value: rengage_uj_template_prod
+    - name: MILVUS_HOST
+      value: milvus.blocfree.com
+    - name: MILVUS_PORT
+      value: '19530'
+    - name: MILVUS_USERNAME
+      value: root
+    - name: MILVUS_PASSWORD
+      value: Milvus
+    - name: sendGridApiKey
+      value: >-
+        SG.TO_BE_ADDED
+    - name: senderEmail
+      value: admin@rengage.co
+    - name: RENGAGE_TEMPLATE_URL
+      value: 'http://rengage-template:8082/api/template'
+    - name: RENGAGE_COMMENT_URL
+      value: 'http://rengage-comment:8083/api/comment'
+    - name: INGEST_API_URL
+      value: 'http://rengage-ingest:80/api/v1'
+    - name: CACHE_SERVICE_URL
+      value: 'http://rengage-cache:8080/api'
+    - name: GPT_API_KEY
+      value: >-
+        sk-TO_BE_ADDED
+    - name: JAVA_OPTS
+      value: >-
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.local.only=false
+        -Dcom.sun.management.jmxremote.port=9010
+        -Dcom.sun.management.jmxremote.rmi.port=9010
+        -Djava.rmi.server.hostname=127.0.0.1 -Xmx4g
+        -XX:+ExplicitGCInvokesConcurrent
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
