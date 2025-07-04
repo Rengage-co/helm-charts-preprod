@@ -597,20 +597,10 @@ presentationlayer:
       value: 'true'
     - name: service.email.sendGridApiKey
       value: >-
-        SG.TO_BE_ADDED
-    - name: MILVUS_COLLECTION_NAME
-      value: rengage_uj_template_prod
-    - name: MILVUS_HOST
-      value: milvus.blocfree.com
-    - name: MILVUS_PORT
-      value: '19530'
-    - name: MILVUS_USERNAME
-      value: root
-    - name: MILVUS_PASSWORD
-      value: Milvus
+        TO_BE_ADDED
     - name: sendGridApiKey
       value: >-
-        SG.TO_BE_ADDED
+        TO_BE_ADDED
     - name: senderEmail
       value: admin@rengage.co
     - name: RENGAGE_TEMPLATE_URL
@@ -623,7 +613,7 @@ presentationlayer:
       value: 'http://rengage-cache:8080/api'
     - name: GPT_API_KEY
       value: >-
-        sk-TO_BE_ADDED
+        TO_BE_ADDED
     - name: JAVA_OPTS
       value: >-
         -Dcom.sun.management.jmxremote
