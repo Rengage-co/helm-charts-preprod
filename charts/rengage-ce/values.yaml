@@ -545,6 +545,16 @@ presentationlayer:
       value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
     - name: DATABASE_USERNAME
       value: root
+    - name: MILVUS_COLLECTION_NAME
+      value: rengage_uj_template_prod
+    - name: MILVUS_HOST
+      value: rengage-milvus
+    - name: MILVUS_PORT
+      value: '19530'
+    - name: MILVUS_USERNAME
+      value: root
+    - name: MILVUS_PASSWORD
+      value: Milvus
     - name: REDIS_HOST
       value: redis-master
     - name: REDIS_PORT
