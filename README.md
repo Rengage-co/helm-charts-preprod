@@ -20,12 +20,15 @@ To install the rengage-ce chart:
     helm install my-rengage-ce rengage-preprod/rengage-ce
 
 To download the rengage-ce chart values:
+
     helm show values rengage-preprod/rengage-ce > my-values.yaml
 
 To install the rengage-ce chart with customized values:
+
     helm install my-rengage-ce rengage-preprod/rengage-ce -f my-values.yaml
     
 To upgrade the rengage-ce chart:
+
     helm upgrade my-rengage-ce rengage-preprod/rengage-ce -f my-values.yaml
 
 To uninstall the chart:
