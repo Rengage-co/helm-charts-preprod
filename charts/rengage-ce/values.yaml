@@ -534,33 +534,13 @@ presentationlayer:
     tag: "0c047efa"
   env:
     - name: CACHE_SERVICE_URL
-      value: 'http://rengage-cache:8080/api/cache/clearColumn'
-    - name: CONDUCTOR_CLICKHOUSE_APIENDPOINT
-      value: 'http://rengage-cache:8080/api/cache/get'
-    - name: CONDUCTOR_CLICKHOUSE_AUTHORIZATION
-      value: Basic TO_BE_ADDED
-    - name: DATABASE_PASSWORD
-      value: password
+      value: 'http://rengage-cache:8080/api'
     - name: DATABASE_URL
       value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
     - name: DATABASE_USERNAME
       value: root
-    - name: MILVUS_COLLECTION_NAME
-      value: rengage_uj_template_prod
-    - name: MILVUS_HOST
-      value: rengage-milvus
-    - name: MILVUS_PORT
-      value: '19530'
-    - name: MILVUS_USERNAME
-      value: root
-    - name: MILVUS_PASSWORD
-      value: Milvus
-    - name: REDIS_HOST
-      value: redis-master
-    - name: REDIS_PORT
-      value: '6379'
-    - name: REDIS_SSL
-      value: 'true'
+    - name: DATABASE_PASSWORD
+      value: password
     - name: SPRING_CACHE_TYPE
       value: simple
     - name: SPRING_DATA_REDIS_HOST
@@ -587,16 +567,12 @@ presentationlayer:
       value: prod
     - name: CONDUCTOR_SERVERURL
       value: 'http://rengage-conductor:8080/api/'
+    - name: CONDUCTOR_SERVER_API_USER_NAME
+      value: rengage
+    - name: CONDUCTOR_SERVER_API_PASSWORD
+      value: password
     - name: GOOGLE_APPLICATION_CREDENTIALS
       value: /google-app-credential/service_account.json
-    - name: timestream.database
-      value: rengage-prod
-    - name: spring.data.redis.host
-      value: redis-master
-    - name: spring.data.redis.port
-      value: '6379'
-    - name: spring.data.redis.ssl
-      value: 'true'
     - name: CLICKHOUSE_JDBCURL
       value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
     - name: CLICKHOUSE_USERNAME
