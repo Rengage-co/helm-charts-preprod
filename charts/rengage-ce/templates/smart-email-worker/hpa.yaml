@@ -1,0 +1,34 @@
+{{- if .Values.smartemailworker.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ printf "%s-smartemailworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-smartemailworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ printf "%s-smartemailworker" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.smartemailworker.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.smartemailworker.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.smartemailworker.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.smartemailworker.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.smartemailworker.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.smartemailworker.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

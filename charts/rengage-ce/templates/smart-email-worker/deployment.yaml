@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-smartemailworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-smartemailworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.smartemailworker.autoscaling.enabled }}
+  replicas: {{ .Values.smartemailworker.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ printf "%s-smartemailworker" (include "rengage-ce.name" .) }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      {{- with .Values.smartemailworker.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ printf "%s-smartemailworker" (include "rengage-ce.name" .) }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.smartemailworker.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.smartemailworker.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.smartemailworker.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.smartemailworker.securityContext | nindent 12 }}
+          image: "{{ .Values.smartemailworker.image.repository }}:{{ .Values.smartemailworker.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.smartemailworker.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.smartemailworker.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.smartemailworker.service.port }}
+              protocol: TCP
+          {{- with .Values.smartemailworker.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.smartemailworker.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.smartemailworker.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.smartemailworker.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.smartemailworker.resources | nindent 12 }}
+          {{- with .Values.smartemailworker.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.smartemailworker.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

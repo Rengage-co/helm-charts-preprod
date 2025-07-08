@@ -1,0 +1,34 @@
+{{- if .Values.smartpushworker.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ printf "%s-smartpushworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-smartpushworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ printf "%s-smartpushworker" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.smartpushworker.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.smartpushworker.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.smartpushworker.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.smartpushworker.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.smartpushworker.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.smartpushworker.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-usertagworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-usertagworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.usertagworker.autoscaling.enabled }}
+  replicas: {{ .Values.conductor.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ printf "%s-usertagworker" (include "rengage-ce.name" .) }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      {{- with .Values.usertagworker.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ printf "%s-usertagworker" (include "rengage-ce.name" .) }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.usertagworker.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.usertagworker.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.usertagworker.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.usertagworker.securityContext | nindent 12 }}
+          image: "{{ .Values.usertagworker.image.repository }}:{{ .Values.usertagworker.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.usertagworker.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.usertagworker.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.usertagworker.service.port }}
+              protocol: TCP
+          {{- with .Values.usertagworker.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.usertagworker.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.usertagworker.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.usertagworker.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.usertagworker.resources | nindent 12 }}
+          {{- with .Values.usertagworker.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.usertagworker.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
