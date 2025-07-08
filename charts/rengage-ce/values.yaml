@@ -83,7 +83,7 @@ nginx:
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
+    # choice for the . This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     # limits:
@@ -166,10 +166,52 @@ aiagent:
 cache:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/cache-service
     pullPolicy: IfNotPresent
-    tag: ""
-  env: []
+    tag: "3ea4ec6a_20250422102227"
+  env:
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: 'https://6e3256b8aa56412dba45b16b4c85efb4.apm.us-west-2.aws.cloud.es.io:443'
+    - name: OTEL_EXPORTER_OTLP_HEADERS_AUTHORIZATION
+      value: Bearer yfOpxQEvLYmi4EZftW
+    - name: OTEL_EXPORTER_OTLP_DEPLOYMENT_ENVIRONMENT
+      value: prod
+    - name: CACHE_TTL_DAYS
+      value: '365'
+    - name: CACHE_PREFIX
+      value: prod_
+    - name: SPRING_DATA_REDIS_HOST
+      value: valkey-user-profile-cache-internal.rengage.ai
+    - name: SPRING_DATA_REDIS_PASSWORD
+      value: Reng@ge123456
+    - name: SPRING_DATA_REDIS_PORT
+      value: '6379'
+    - name: SPRING_DATA_REDIS_TIMEOUT
+      value: '3000'
+    - name: SPRING_DATA_REDIS_LETTUCE_POLL_MAX_IDLE
+      value: '10'
+    - name: SPRING_DATA_REDIS_LETTUCE_POLL_MIN_IDLE
+      value: '3'
+    - name: SPRING_DATA_REDIS_LETTUCE_POLL_MAX_ACTIVE
+      value: '210'
+    - name: SPRING_DATA_REDIS_LETTUCE_POOL_MAX_WAIT
+      value: '10000'
+    - name: SPRING_DATA_REDIS_SSL
+      value: 'false'
+    - name: SERVER_TOMCAT_MAX_THREADS
+      value: '500'
+    - name: SERVER_TOMCAT_MIN_SPARE_THREADS
+      value: '50'
+    - name: SERVER_TOMCAT_ACCEPT_COUNT
+      value: '1000'
+    - name: SERVER_TOMCAT_MAX_CONNECTIONS
+      value: '2000'
+    - name: TENANT_USERID_COLUMN_TRENDSI
+      value: trendsi_user_id
+    - name: TENANT_USERID_COLUMN_DEFAULT
+      value: user_id
+    - name: CLICKHOUSE_URL
+      value: 'http://clickhouse:8123?user=default&password=password'
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -265,10 +307,32 @@ conductor:
 conductorconsumer:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/conductor-consumer-service
     pullPolicy: IfNotPresent
-    tag: ""
-  env: []
+    tag: "b273c13"
+  env:
+    - name: DATABASE_URL
+      value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
+    - name: DATABASE_USERNAME
+      value: default
+    - name: DATABASE_PASSWORD
+      value: password
+    - name: KAFKA_SERVER
+      value: 'kafka:9092'
+    - name: spring.kafka.isAuthorization
+      value: 'false'
+    - name: confluent.username
+      value: user1
+    - name: confluent.password
+      value: password
+    - name: KAFKA_CONSUMER_NUM
+      value: '6'
+    - name: spring.kafka.consumer.max-poll-records
+      value: '1000'
+    - name: KAFKA_TOPIC
+      value: user-journey-log-prod
+    - name: KAFKA_GROUP
+      value: user-journey-log-prod
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -331,10 +395,102 @@ conductorui:
 consumer:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/consumer-service
     pullPolicy: IfNotPresent
-    tag: ""
-  env: []
+    tag: "e38360e"
+  env:
+    - name: spring.datasource.dynamic.primary
+      value: master
+    - name: spring.datasource.dynamic.datasource.master.url
+      value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
+    - name: spring.datasource.dynamic.datasource.master.username
+      value: root
+    - name: spring.datasource.dynamic.datasource.master.password
+      value: password
+    - name: spring.datasource.dynamic.datasource.slave.url
+      value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
+    - name: spring.datasource.dynamic.datasource.slave.username
+      value: default
+    - name: spring.datasource.dynamic.datasource.slave.password
+      value: password
+    - name: spring.kafka.bootstrap-servers
+      value: 'kafka:9092'
+    - name: spring.kafka.consumer.group-id
+      value: journey_webhook_prod
+    - name: spring.kafka.consumer.topic
+      value: email_webhook_prod
+    - name: spring.kafka.consumer.max-poll-records
+      value: '500'
+    - name: dataprocessinglayer.env
+      value: prod
+    - name: spring.datasource.dynamic.datasource.trendsi.url
+      value: 'jdbc:clickhouse://clickhouse:8123/trendsi?compress=0&ssl=false'
+    - name: spring.datasource.dynamic.datasource.trendsi.username
+      value: default
+    - name: spring.datasource.dynamic.datasource.trendsi.password
+      value: password
+    - name: trendsi.kafka.is-open
+      value: 'true'
+    - name: trendsi.kafka.bootstrap-servers
+      value: 'kafka:9092'
+    - name: trendsi.kafka.consumer.topic1
+      value: Trendsi_user_profile
+    - name: trendsi.kafka.consumer.topic2
+      value: Trendsi_user_event
+    - name: trendsi.kafka.consumer.group-id
+      value: trendsi_1
+    - name: confluent.username
+      value: user1
+    - name: confluent.password
+      value: password
+    - name: spring.data.redis.host
+      value: redis-master
+    - name: spring.data.redis.port
+      value: '6379'
+    - name: spring.data.redis.timeout
+      value: '3000'
+    - name: spring.data.redis.lettuce.pool.max-idle
+      value: '10'
+    - name: spring.data.redis.lettuce.pool.min-idle
+      value: '3'
+    - name: spring.data.redis.lettuce.pool.max-active
+      value: '210'
+    - name: spring.data.redis.lettuce.pool.max-wait
+      value: '10000'
+    - name: spring.data.redis.ssl
+      value: 'true'
+    - name: spring.kafka.isAuthorization
+      value: 'true'
+    - name: confluent.enable
+      value: 'true'
+    - name: spring.kafka.unSubscribe.topic
+      value: subscribe_topic
+    - name: spring.kafka.unSubscribe.groupId
+      value: subscribe_group
+    - name: spring.kafka.consumer.user_profile.topic
+      value: test
+    - name: spring.kafka.partition-thread-num
+      value: '3'
+    - name: spring.kafka.isEnable
+      value: 'true'
+    - name: spring.kafka.consumer.push.topic
+      value: push_webhook_prod
+    - name: spring.kafka.consumer.sms.topic
+      value: sms_webhook_prod
+    - name: spring.kafka.consumer.inapp.topic
+      value: inapp_webhook_prod
+    - name: spring.kafka.consumer.user-event.num
+      value: '0'
+    - name: spring.kafka.consumer.user-profile.num
+      value: '0'
+    - name: env
+      value: prod
+    - name: spring.kafka.enable
+      value: 'false'
+    - name: spring.kafka.consumer.retry.topic
+      value: metadata_retry_queue_prod
+    - name: conductor_server_api_url
+      value: 'http://conductor-server:8080/api/queue'
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -1198,10 +1354,88 @@ template:
 userconsumer:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/user-consumer-service
     pullPolicy: IfNotPresent
-    tag: ""
-  env: []
+    tag: "c0e51be"
+  env:
+    - name: user.cache.url
+      value: 'http://cache-service:8080/api/cache'
+    - name: spring.kafka.consumer.user-profile.num
+      value: '2'
+    - name: spring.kafka.consumer.user-event.num
+      value: '6'
+    - name: management.endpoints.web.exposure.include
+      value: 'prometheus,health'
+    - name: spring.datasource.dynamic.primary
+      value: master
+    - name: spring.datasource.dynamic.datasource.master.url
+      value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
+    - name: spring.datasource.dynamic.datasource.master.username
+      value: root
+    - name: spring.datasource.dynamic.datasource.master.password
+      value: password
+    - name: spring.datasource.dynamic.datasource.slave.url
+      value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
+    - name: spring.datasource.dynamic.datasource.slave.username
+      value: default
+    - name: spring.datasource.dynamic.datasource.slave.password
+      value: password
+    - name: spring.kafka.bootstrap-servers
+      value: 'kafka:9092'
+    - name: spring.kafka.consumer.max-poll-records
+      value: '1000'
+    - name: confluent.username
+      value: user1
+    - name: confluent.password
+      value: password
+    - name: spring.data.redis.host
+      value: redis
+    - name: spring.data.redis.port
+      value: '6379'
+    - name: spring.data.redis.timeout
+      value: '3000'
+    - name: spring.data.redis.lettuce.pool.max-idle
+      value: '10'
+    - name: spring.data.redis.lettuce.pool.min-idle
+      value: '3'
+    - name: spring.data.redis.lettuce.pool.max-active
+      value: '210'
+    - name: spring.data.redis.lettuce.pool.max-wait
+      value: '10000'
+    - name: spring.kafka.user.tenant-name
+      value: 'recroom_dev,rengage,Solvely,recroom,blocfree,trendsi'
+    - name: spring.data.redis.ssl
+      value: 'true'
+    - name: spring.kafka.isAuthorization
+      value: 'true'
+    - name: confluent.enable
+      value: 'true'
+    - name: spring.kafka.isEnable
+      value: 'true'
+    - name: conductor.trigger.events
+      value: >-
+        played_banned,session_start,Orientation_finished,account_finished,markerpen_session_v2,room_stats,IAP_success,game_session_completed
+    - name: spring.kafka.consumer.push.topic
+      value: push_webhook_prod
+    - name: spring.kafka.consumer.push.retry-topic
+      value: metadata_retry_queue_prod
+    - name: spring.kafka.consumer.push.group-id
+      value: push_webhook_prod_id
+    - name: spring.kafka.consumer.push.num
+      value: '6'
+    - name: spring.kafka.consumer.push_statistic.tenant
+      value: 'trendsi,recroom'
+    - name: debug_to_enforce_restart
+      value: '1'
+    - name: otel.exporter.otlp.endpoint
+      value: >-
+        https://6e3256b8aa56412dba45b16b4c85efb4.apm.us-west-2.aws.cloud.es.io:443
+    - name: otel.exporter.otlp.headers.authorization
+      value: Bearer yfOpxQEvLYmi4EZftW
+    - name: otel.exporter.otlp.deployment.environment
+      value: prod
+    - name: spring.kafka.consumer.capitalLetterSupported
+      value: 'false'
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
