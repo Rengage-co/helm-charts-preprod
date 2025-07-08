@@ -526,6 +526,62 @@ ingestwebhook:
   volumes: []
   volumeMounts: []
 
+usertagworker:
+  replicaCount: 1
+  image:
+    repository: public.ecr.aws/rengage/rengage-ce/conductor-workers
+    pullPolicy: IfNotPresent
+    tag: "468abb8c"
+  env:
+    - name: worker.taskDefName
+      value: Tag-Base-Rengage
+    - name: worker.service.type
+      value: tag
+    - name: userTag.type
+      value: clickhouse
+    - name: worker.threadCount
+      value: 5
+    - name: worker.pollIntervalInMilliseconds
+      value: 100
+    - name: worker.serverURI
+      value: 'http://conductor-server:8080/api/'
+    - name: clickhouse.jdbcUrl
+      value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
+    - name: clickhouse.username
+      value: default
+    - name: clickhouse.password
+      value: password
+    - name: clickhouse.userProfileIdColumn
+      value: user_id
+    - name: clickhouse.tenant
+      value: rengage
+  imagePullSecrets: []
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+  resources: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  autoscaling:
+    enabled: false
+
+
+
+
 presentationlayer:
   replicaCount: 2
   image:
