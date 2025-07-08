@@ -1,0 +1,45 @@
+{{- if .Values.emailworker.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-emailworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-emailworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+  {{- with .Values.emailworker.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.emailworker.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.emailworker.ingress.tls }}
+  tls:
+    {{- range .Values.emailworker.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.emailworker.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ printf "%s-emailworker" (include "rengage-ce.fullname" $) }}
+                port:
+                  number: {{ $.Values.emailworker.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

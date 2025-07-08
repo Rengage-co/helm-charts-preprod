@@ -1,0 +1,45 @@
+{{- if .Values.usertagworker.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-usertagworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-usertagworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+  {{- with .Values.usertagworker.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.usertagworker.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.usertagworker.ingress.tls }}
+  tls:
+    {{- range .Values.usertagworker.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.usertagworker.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ printf "%s-usertagworker" (include "rengage-ce.fullname" $) }}
+                port:
+                  number: {{ $.Values.usertagworker.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

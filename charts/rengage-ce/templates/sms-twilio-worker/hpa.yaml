@@ -1,0 +1,34 @@
+{{- if .Values.smsworker.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ printf "%s-smsworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-smsworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ printf "%s-smsworker" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.smsworker.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.smsworker.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.smsworker.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.smsworker.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.smsworker.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.smsworker.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
