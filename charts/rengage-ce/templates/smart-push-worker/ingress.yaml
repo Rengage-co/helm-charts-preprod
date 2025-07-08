@@ -1,0 +1,45 @@
+{{- if .Values.smartpushworker.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-smartpushworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-smartpushworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+  {{- with .Values.smartpushworker.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.smartpushworker.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.smartpushworker.ingress.tls }}
+  tls:
+    {{- range .Values.smartpushworker.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.smartpushworker.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ printf "%s-smartpushworker" (include "rengage-ce.fullname" $) }}
+                port:
+                  number: {{ $.Values.smartpushworker.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

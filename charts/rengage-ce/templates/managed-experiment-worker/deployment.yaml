@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-managedexperimentworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-managedexperimentworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.managedexperimentworker.autoscaling.enabled }}
+  replicas: {{ .Values.conductor.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ printf "%s-managedexperimentworker" (include "rengage-ce.name" .) }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      {{- with .Values.managedexperimentworker.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ printf "%s-managedexperimentworker" (include "rengage-ce.name" .) }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.managedexperimentworker.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.managedexperimentworker.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.managedexperimentworker.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.managedexperimentworker.securityContext | nindent 12 }}
+          image: "{{ .Values.managedexperimentworker.image.repository }}:{{ .Values.managedexperimentworker.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.managedexperimentworker.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.managedexperimentworker.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.managedexperimentworker.service.port }}
+              protocol: TCP
+          {{- with .Values.managedexperimentworker.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.managedexperimentworker.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.managedexperimentworker.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.managedexperimentworker.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.managedexperimentworker.resources | nindent 12 }}
+          {{- with .Values.managedexperimentworker.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.managedexperimentworker.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

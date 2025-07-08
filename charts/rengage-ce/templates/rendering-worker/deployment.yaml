@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-renderingworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-renderingworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.renderingworker.autoscaling.enabled }}
+  replicas: {{ .Values.conductor.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ printf "%s-renderingworker" (include "rengage-ce.name" .) }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      {{- with .Values.renderingworker.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ printf "%s-renderingworker" (include "rengage-ce.name" .) }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.renderingworker.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.renderingworker.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.renderingworker.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.renderingworker.securityContext | nindent 12 }}
+          image: "{{ .Values.renderingworker.image.repository }}:{{ .Values.renderingworker.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.renderingworker.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.renderingworker.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.renderingworker.service.port }}
+              protocol: TCP
+          {{- with .Values.renderingworker.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.renderingworker.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.renderingworker.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.renderingworker.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.renderingworker.resources | nindent 12 }}
+          {{- with .Values.renderingworker.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.renderingworker.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

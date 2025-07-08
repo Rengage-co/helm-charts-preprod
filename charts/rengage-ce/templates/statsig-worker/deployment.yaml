@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf "%s-statsigworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-statsigworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.statsigworker.autoscaling.enabled }}
+  replicas: {{ .Values.statsigworker.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ printf "%s-statsigworker" (include "rengage-ce.name" .) }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      {{- with .Values.statsigworker.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ printf "%s-statsigworker" (include "rengage-ce.name" .) }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "rengage-ce.labels" . | nindent 8 }}
+        {{- with .Values.statsigworker.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.statsigworker.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.statsigworker.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.statsigworker.securityContext | nindent 12 }}
+          image: "{{ .Values.statsigworker.image.repository }}:{{ .Values.statsigworker.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.statsigworker.image.pullPolicy }}
+          env:
+            {{- toYaml .Values.statsigworker.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.statsigworker.service.port }}
+              protocol: TCP
+          {{- with .Values.statsigworker.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.statsigworker.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- with .Values.statsigworker.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.statsigworker.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.statsigworker.resources | nindent 12 }}
+          {{- with .Values.statsigworker.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.statsigworker.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

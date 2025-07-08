@@ -1,0 +1,34 @@
+{{- if .Values.usertagworker.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ printf "%s-usertagworker" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-usertagworker" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ printf "%s-usertagworker" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.usertagworker.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.usertagworker.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.usertagworker.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.usertagworker.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.usertagworker.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.usertagworker.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
