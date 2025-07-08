@@ -277,7 +277,77 @@ conductor:
     repository: public.ecr.aws/rengage/rengage-ce/conductor-server
     pullPolicy: IfNotPresent
     tag: "bb07e1b7"
-  env: []
+  env:
+    - name: conductor.db.type
+      value: redis_standalone
+    - name: event.thread.pool.size
+      value: "150"
+    - name: conductor.redis.hosts
+      value: rengage-prod-redis-2-gxdy23.serverless.usw2.cache.amazonaws.com:6379:us-west-2a
+    - name: conductor.redis.isSSL
+      value: "true"
+    - name: conductor.redis.isQueueRedisSSL
+      value: "true"
+    - name: conductor.redis.tls
+      value: "true"
+    - name: journey-insight.db.type
+      value: kafka
+    - name: journey-insight.kafka.bootstrapServers
+      value: kafka-internal.rengage.ai:9092
+    - name: journey-insight.kafka.topic
+      value: user-journey-log-prod
+    - name: conductor.event-queues.sqs.batchSize
+      value: "10"
+    - name: conductor.event-queues.sqs.pollTimeDuration
+      value: 5ms
+    - name: conductor.redis.workflowNamespacePrefix
+      value: conductor
+    - name: conductor.redis.queueNamespacePrefix
+      value: conductor_queues
+    - name: queues.dynomite.threads
+      value: "10"
+    - name: conductor.app.workflowRepairServiceEnabled
+      value: "false"
+    - name: conductor.redis.queuesNonQuorumPort
+      value: "22122"
+    - name: conductor.indexing.enabled
+      value: "true"
+    - name: conductor.elasticsearch.url
+      value: https://rengage-es-8.es.vpce.us-west-2.aws.elastic-cloud.com:443
+    - name: conductor.elasticsearch.username
+      value: elastic
+    - name: conductor.elasticsearch.password
+      value: zNxihzqNg2mgfU4RwhkkoyVR
+    - name: conductor.elasticsearch.indexReplicasCount
+      value: "0"
+    - name: conductor.elasticsearch.indexPrefix
+      value: conductor-prod-es8
+    - name: conductor.elasticsearch.version
+      value: "8"
+    - name: conductor.app.ttlRedisKeyExpire
+      value: 3600s
+    - name: conductor.app.enableRemoveRedisKey
+      value: "true"
+    - name: conductor.app.workflowCleanupIds
+      value: ephemeralKitchenSinkStoredTasks,kitchensink,Send_Test_Email_Workflow_C97E589F39164D94BF54D241FBDDFC9B
+    - name: loadSample
+      value: "false"
+    - name: conductor.elasticsearch.clusterHealthColor
+      value: yellow
+    - name: conductor.default-event-queue.type
+      value: sqs
+    - name: conductor.event-queues.sqs.enabled
+      value: "true"
+    - name: conductor.event-queues.sqs.authorized-accounts
+      value: "593045915463"
+    - name: conductor.event-queues.sqs.listenerQueuePrefix
+      value: conductor_sqs_prod_
+    - name: conductor.metrics-prometheus.enabled
+      value: "true"
+    - name: management.endpoints.web.exposure.include
+      value: prometheus
+    - name: conductor.workflow-status-listener.type
+      value: archive
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -613,8 +683,89 @@ frontend:
   readinessProbe: {}
   autoscaling:
     enabled: false
-  volumes: []
-  volumeMounts: []
+  volumes:
+    - configMap:
+        defaultMode: 420
+        name: pl-google-app-credential
+      name: google-app-credential
+  volumeMounts:
+    - mountPath: /usr/share/nginx/html/config/service_account.json
+      name: google-app-credential
+      subPath: service_account.json
+blocfree:
+  replicaCount: 1
+  image:
+    repository: public.ecr.aws/rengage/rengage-ce/frontend-blocfree
+    pullPolicy: IfNotPresent
+    tag: "314a431c_20250417042158"
+  env:
+    - name: RENGAGE_PRESENTATION_LAYER_URL
+      value: 'http://presentation-layer:8080'
+    - name: DATABASE_URL
+      value: 'mysql://root:password@mysql:3306/blocfree?sslaccept=strict'
+    - name: RENGAGE_TEMPLATE_URL
+      value: 'http://template-service:8082/api/template'
+    - name: WEB_FETCH_URL
+      value: 'http://web-fetch:3000'
+    - name: NEXT_PUBLIC_FIREBASE
+      value: |-
+        {
+          "apiKey": "AIzaSyBVkLq81VKPX3-GK8S01hdKsUEXNuzO_v8",
+          "authDomain": "blocfree-3c27a.firebaseapp.com",
+          "projectId": "blocfree-3c27a",
+          "storageBucket": "blocfree-3c27a.appspot.com",
+          "messagingSenderId": "260985724614",
+          "appId": "1:260985724614:web:48df7494658b795953c1c7",
+          "measurementId": "G-5SR1C1LMM4"
+        }
+    - name: NEXT_PUBLIC_GOOGLE_CLIENT_ID
+      value: 161367630061-fpiv9qemmn7o9jktcgleo67gf7kvreva.apps.googleusercontent.com
+    - name: NEXT_PUBLIC_INGEST_API_HOST
+      value: 'https://ingest.rengage.net/api/v1/capture'
+    - name: NEXT_PUBLIC_INGEST_TENANT
+      value: Blocfree
+    - name: NEXT_PUBLIC_INGEST_TOKEN
+      value: tT0QgSu5adlFRD39XI5km98FMklsYno7jyQ85nZbNsweMjVI6XdP5yNHCoXZkxU8EWTDfORwxrpfgf45RKjT7Yx0SENuGgxEDFYZ
+    - name: API_URL
+      value: /
+    - name: NEXT_PUBLIC_POSTHOG_API_KEY
+      value: phc_c4FJnbi951zjJJnhHkz7DRkpDQl54xTLEo2UULvo6Sa
+    - name: STRIPE_PK
+      value: pk_live_51POAkZP1HbwY21WbnllOYhYfdHCzK1WHUMgHfB56K2W8MYjt0zVrTIaUZCw68wr2nxuT8Gsv8lJkYKlTIPKnpsFg000zdKUJ01
+    - name: ASSISTANT_ID
+      value: asst_Qr3aLgIF1dff6fhpD5VPUtp4
+  imagePullSecrets: []
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations: {}
+    hosts:
+      - host: demo.rengage.net
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+  resources: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  autoscaling:
+    enabled: false
+  volumes:
+    - configMap:
+        defaultMode: 420
+        name: pl-google-app-credential
+      name: google-app-credential
+  volumeMounts:
+    - mountPath: /usr/share/nginx/html/config/service_account.json
+      name: google-app-credential
+      subPath: service_account.json
 
 ingest:
   replicaCount: 1
@@ -622,7 +773,15 @@ ingest:
     repository: nginx
     pullPolicy: IfNotPresent
     tag: ""
-  env: []
+  env:
+    - name: redishost
+      value: redis-master
+    - name: redisssl
+      value: 'true'
+    - name: redisport
+      value: 6379
+    - name: KAFKA_SERVER
+      value: 'kafka:9092'
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -655,7 +814,25 @@ ingestwebhook:
     repository: nginx
     pullPolicy: IfNotPresent
     tag: ""
-  env: []
+  env:
+    - name: redishost
+      value: redis-master
+    - name: redisssl
+      value: 'true'
+    - name: redisport
+      value: 6379
+    - name: KAFKA_SERVER
+      value: 'kafka:9092'
+    - name: Env
+      value: prod
+    - name: email_webhook_topic
+      value: email_webhook_prod
+    - name: sms_webhook_topic
+      value: sms_webhook_prod
+    - name: push_webhook_topic
+      value: push_webhook_prod
+    - name: inapp_webhook_topic
+      value: inapp_webhook_prod
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -1461,4 +1638,3 @@ userconsumer:
     enabled: false
   volumes: []
   volumeMounts: []
-
