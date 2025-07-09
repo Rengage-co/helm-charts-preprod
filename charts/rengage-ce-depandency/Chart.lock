@@ -1,7 +1,7 @@
 dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 21.2.6
+  version: 21.2.7
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 8.5.1
@@ -10,12 +10,12 @@ dependencies:
   version: 17.0.9
 - name: clickhouse
   repository: https://charts.bitnami.com/bitnami
-  version: 9.3.6
+  version: 9.3.8
 - name: kafka
   repository: https://charts.bitnami.com/bitnami
   version: 32.2.18
 - name: mysql
   repository: https://charts.bitnami.com/bitnami
   version: 13.0.2
-digest: sha256:dd462b7534d848f1cdd9bacb87585289dc3e587998b8799a83879933f1845b1e
-generated: "2025-06-26T22:03:31.946133-07:00"
+digest: sha256:d053de774af1b7138b57db70ee7eb5d3470500ab873ba24a10b846f7c2bf048b
+generated: "2025-07-08T21:10:14.551279-07:00"

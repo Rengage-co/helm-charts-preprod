@@ -79,9 +79,12 @@ kafka:
   enabled: true
   fullnameOverride: kafka
   broker:
+    resourcesPreset: "xlarge"
     persistence:
       size: 100Gi
   controller:
+    replicaCount: 1
+    resourcesPreset: "2xlarge"
     persistence:
       size: 30Gi
   sasl:
