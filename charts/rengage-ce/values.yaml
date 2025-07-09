@@ -779,7 +779,7 @@ ingest:
     - name: redisssl
       value: 'true'
     - name: redisport
-      value: 6379
+      value: '6379'
     - name: KAFKA_SERVER
       value: 'kafka:9092'
   imagePullSecrets: []
@@ -820,7 +820,7 @@ ingestwebhook:
     - name: redisssl
       value: 'true'
     - name: redisport
-      value: 6379
+      value: '6379'
     - name: KAFKA_SERVER
       value: 'kafka:9092'
     - name: Env
@@ -873,9 +873,9 @@ usertagworker:
     - name: userTag.type
       value: clickhouse
     - name: worker.threadCount
-      value: 5
+      value: '5'
     - name: worker.pollIntervalInMilliseconds
-      value: 100
+      value: '100'
     - name: worker.serverURI
       value: 'http://conductor-server:8080/api/'
     - name: clickhouse.jdbcUrl
@@ -1432,8 +1432,6 @@ presentationlayer:
       value: default
     - name: CLICKHOUSE_PASSWORD
       value: password
-    - name: spring.kafka.isConfluent
-      value: 'true'
     - name: service.email.sendGridApiKey
       value: >-
         TO_BE_ADDED
@@ -1448,8 +1446,6 @@ presentationlayer:
       value: 'http://rengage-comment:8083/api/comment'
     - name: INGEST_API_URL
       value: 'http://rengage-ingest:80/api/v1'
-    - name: CACHE_SERVICE_URL
-      value: 'http://rengage-cache:8080/api'
     - name: GPT_API_KEY
       value: >-
         TO_BE_ADDED
