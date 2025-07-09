@@ -684,14 +684,15 @@ frontend:
   autoscaling:
     enabled: false
   volumes:
-    - configMap:
+    - name: frontend-google-app-credential
+      secret:
+        secretName: google-app-credential
         defaultMode: 420
-        name: pl-google-app-credential
-      name: google-app-credential
   volumeMounts:
     - mountPath: /usr/share/nginx/html/config/service_account.json
-      name: google-app-credential
+      name: frontend-google-app-credential
       subPath: service_account.json
+
 blocfree:
   replicaCount: 1
   image:
@@ -743,11 +744,11 @@ blocfree:
     type: ClusterIP
     port: 80
   ingress:
-    enabled: true
+    enabled: false
     className: "nginx"
     annotations: {}
     hosts:
-      - host: demo.rengage.net
+      - host: chart-example.local
         paths:
           - path: /
             pathType: ImplementationSpecific
@@ -758,13 +759,13 @@ blocfree:
   autoscaling:
     enabled: false
   volumes:
-    - configMap:
+    - name: bf-google-app-credential
+      secret:
+        secretName: google-app-credential
         defaultMode: 420
-        name: pl-google-app-credential
-      name: google-app-credential
   volumeMounts:
     - mountPath: /usr/share/nginx/html/config/service_account.json
-      name: google-app-credential
+      name: bf-google-app-credential
       subPath: service_account.json
 
 ingest:
@@ -1032,16 +1033,14 @@ pushworker:
   autoscaling:
     enabled: false
   volumes:
-    - name: service-account-key-volume
+    - name: pw-google-app-credential
       secret:
+        secretName: google-app-credential
         defaultMode: 420
-        items:
-          - key: serviceAccountKey.json
-            path: serviceAccountKey.json
-        secretName: rengage-firebase-service-account
   volumeMounts:
-    - mountPath: /app/secret
-      name: service-account-key-volume
+    - mountPath: /app/secret/serviceAccountKey.json
+      name: pw-google-app-credential
+      subPath: service_account.json
 
 managedexperimentworker:
   replicaCount: 1
