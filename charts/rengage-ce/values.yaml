@@ -1482,13 +1482,14 @@ presentationlayer:
   autoscaling:
     enabled: false
   volumes:
-    - configMap:
+    - name: pl-google-app-credential
+      secret:
+        secretName: google-app-credential
         defaultMode: 420
-        name: pl-google-app-credential
-      name: google-app-credential
   volumeMounts:
-    - mountPath: /google-app-credential
-      name: google-app-credential
+    - mountPath: /google-app-credential/service_account.json
+      name: pl-google-app-credential
+      subPath: service_account.json
 
 template:
   replicaCount: 1
