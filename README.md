@@ -11,6 +11,10 @@ If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
 rengage` to see the charts.
 
+Before running the helm install, you need to execute the following command to load the Firebase service_account information. To create the required `secret.yaml` file, please contact our support team. 
+
+    kubectl apply -f secret.yaml
+
 To install the rengage-ce-depandency chart:
 
     helm install my-rengage-ce-dep rengage-preprod/rengage-ce-depandency
