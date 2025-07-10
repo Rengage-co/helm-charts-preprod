@@ -626,7 +626,15 @@ feedmanager:
     repository: nginx
     pullPolicy: IfNotPresent
     tag: ""
-  env: []
+  env:
+    - name: DATABASE_DEFAULT_LINK
+      value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
+    - name: DATABASE_CLICKHOUSE_LINK
+      value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
+    - name: DATABASE_DEFAULT_EXTRA
+      value: ''
+    - name: DATABASE_CLICKHOUSE_EXTRA
+      value: ''
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
