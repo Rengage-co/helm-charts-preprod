@@ -729,9 +729,9 @@ dataretention:
 feedmanager:
   replicaCount: 2
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/feedmanager
     pullPolicy: IfNotPresent
-    tag: ""
+    tag: "20250711"
   env:
     - name: DATABASE_DEFAULT_LINK
       value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
