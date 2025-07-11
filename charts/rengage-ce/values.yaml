@@ -751,7 +751,7 @@ feedmanager:
     port: 80
   ingress:
     enabled: true
-    className: ""
+    className: "nginx"
     annotations: {}
     hosts:
       - host: feedmanager.rengage.net
