@@ -731,7 +731,7 @@ feedmanager:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/feedmanager
     pullPolicy: IfNotPresent
-    tag: "20250711"
+    tag: "202507111620"
   env:
     - name: DATABASE_DEFAULT_LINK
       value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
@@ -741,6 +741,14 @@ feedmanager:
       value: ''
     - name: DATABASE_CLICKHOUSE_EXTRA
       value: ''
+    - name: REDIS_URL
+      value: 'redis-master:6379'
+    - name: REDIS_PASSWORD
+      value: ''
+    - name: REDIS_TLS
+      value: 'true'
+    - name: REDIS_DB
+      value: '0'
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
