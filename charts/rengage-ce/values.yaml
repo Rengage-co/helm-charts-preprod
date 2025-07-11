@@ -130,13 +130,119 @@ nginx:
 #     adminUser: admin
 #     adminPassword: password
 
+
+dataprocessinglayer:
+  replicaCount: 1
+  image:
+    repository: public.ecr.aws/rengage/rengage-ce/dataprocessing-layer
+    pullPolicy: IfNotPresent
+    tag: "3c22f19a"
+  env:
+    - name: spring.datasource.dynamic.primary
+      value: master
+    - name: spring.datasource.dynamic.datasource.master.url
+      value: jdbc:mysql://mysql:3306/presentationlayer?useSSL=false
+    - name: spring.datasource.dynamic.datasource.master.username
+      value: root
+    - name: spring.datasource.dynamic.datasource.master.password
+      value: password
+    - name: spring.datasource.dynamic.datasource.slave.url
+      value: jdbc:clickhouse://clickhouse:8123?ssl=true
+    - name: spring.datasource.dynamic.datasource.slave.username
+      value: default
+    - name: spring.datasource.dynamic.datasource.slave.password
+      value: password
+    - name: spring.kafka.bootstrap-servers
+      value: 'kafka:9092'
+    - name: spring.kafka.consumer.group-id
+      value: journey_email_prod
+    - name: spring.kafka.consumer.topic
+      value: journey_email_metadata_prod
+    - name: spring.kafka.consumer.max-poll-records
+      value: '500'
+    - name: spring.kafka.unSubscribe.topic
+      value: subscribe_topic
+    - name: spring.kafka.unSubscribe.groupId
+      value: subscribe_group
+    - name: spring.kafka.consumer.user_profile.topic
+      value: test
+    - name: spring.kafka.partition-thread-num
+      value: '3'
+    - name: spring.kafka.isEnable
+      value: 'false'
+    - name: dataprocessinglayer.env
+      value: prod_
+    - name: spring.data.redis.host
+      value: redis
+    - name: spring.data.redis.port
+      value: '6379'
+    - name: spring.data.redis.timeout
+      value: '3000'
+    - name: spring.data.redis.lettuce.pool.max-idle
+      value: '10'
+    - name: spring.data.redis.lettuce.pool.min-idle
+      value: '3'
+    - name: spring.data.redis.lettuce.pool.max-active
+      value: '210'
+    - name: spring.data.redis.lettuce.pool.max-wait
+      value: '10000'
+    - name: spring.data.redis.ssl
+      value: 'true'
+    - name: spring.kafka.isAuthorization
+      value: 'false'
+    - name: confluent.enable
+      value: 'false'
+    - name: mybatis-plus.configuration.log-impl
+      value: org.apache.ibatis.logging.nologging.NoLoggingImpl
+  imagePullSecrets: []
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+  resources: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  autoscaling:
+    enabled: false
+  volumes: []
+  volumeMounts: []
+
 aiagent:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/agent-server
     pullPolicy: IfNotPresent
-    tag: ""
-  env: []
+    tag: "625307bd_20250604105927"
+  env:
+    - name: DATABASE_URL
+      value: mysql://root:password@mysql:3306/presentationlayer?useSSL=false
+    - name: FEEDMANAGER_BASEURL
+      value: 'http://feedmanager'
+    - name: OPENAI_API_KEY
+      value: ''
+    - name: CLICKHOUSE_PROTOCOL
+      value: 'https:'
+    - name: CLICKHOUSE_HOST
+      value: clickhouse
+    - name: CLICKHOUSE_PORT
+      value: '8123'
+    - name: CLICKHOUSE_USERNAME
+      value: default
+    - name: CLICKHOUSE_PASSWORD
+      value: password
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -623,9 +729,9 @@ dataretention:
 feedmanager:
   replicaCount: 2
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/feedmanager
     pullPolicy: IfNotPresent
-    tag: ""
+    tag: "20250711"
   env:
     - name: DATABASE_DEFAULT_LINK
       value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
@@ -642,10 +748,10 @@ feedmanager:
   securityContext: {}
   service:
     type: ClusterIP
-    port: 80
+    port: 8080
   ingress:
     enabled: true
-    className: ""
+    className: "nginx"
     annotations: {}
     hosts:
       - host: feedmanager.rengage.net

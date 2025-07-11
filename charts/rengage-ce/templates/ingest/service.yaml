@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.ingest.service.type }}
   ports:
     - port: {{ .Values.ingest.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.ingest.service.port }}
       protocol: TCP
       name: http
   selector:

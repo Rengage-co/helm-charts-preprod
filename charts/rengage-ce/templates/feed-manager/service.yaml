@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.feedmanager.service.type }}
   ports:
     - port: {{ .Values.feedmanager.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.feedmanager.service.port }}
       protocol: TCP
       name: http
   selector:

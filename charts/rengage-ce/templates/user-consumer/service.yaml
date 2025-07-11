@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.userconsumer.service.type }}
   ports:
     - port: {{ .Values.userconsumer.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.userconsumer.service.port }}
       protocol: TCP
       name: http
   selector:
