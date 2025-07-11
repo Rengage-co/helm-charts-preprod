@@ -780,7 +780,7 @@ frontend:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/react-demo
     pullPolicy: IfNotPresent
-    tag: "20250618_prod"
+    tag: "23b47588_prod"
   env: []
   imagePullSecrets: []
   podAnnotations: {}
@@ -830,6 +830,18 @@ blocfree:
       value: 'http://template-service:8082/api/template'
     - name: WEB_FETCH_URL
       value: 'http://web-fetch:3000'
+    - name: NEXT_PUBLIC_POSTHOG_API_KEY
+      value: 'TO_BE_ADDED'
+    - name: OPENAI_API_KEY
+      value: >-
+        'TO_BE_ADDED'
+    - name: GEMINI_API_KEY
+      value: 'TO_BE_ADDED'
+    - name: ANTHROPIC_API_KEY
+      value: >-
+        'TO_BE_ADDED'
+    - name: DEEPSEEK_API_KEY
+      value: 'TO_BE_ADDED'
     - name: NEXT_PUBLIC_FIREBASE
       value: |-
         {
@@ -841,6 +853,8 @@ blocfree:
           "appId": "1:260985724614:web:48df7494658b795953c1c7",
           "measurementId": "G-5SR1C1LMM4"
         }
+    - name: FIREBASE_JSON
+      value: 'TO_BE_ADDED'
     - name: NEXT_PUBLIC_GOOGLE_CLIENT_ID
       value: 161367630061-fpiv9qemmn7o9jktcgleo67gf7kvreva.apps.googleusercontent.com
     - name: NEXT_PUBLIC_INGEST_API_HOST
@@ -1048,6 +1062,9 @@ emailworker:
       value: email
     - name: worker.service.provider.type
       value: sendgrid
+    - name: worker.service.email.sendGridApiKey
+      value: >-
+        TO_BE_ADDED
     - name: worker.service.rendering.contentHubBackendURL
       value: 'http://presentation-layer:8080/graphql'
     - name: worker.service.rendering.contentHubBackendInternalToken
@@ -1423,6 +1440,10 @@ smsworker:
       value: '100'
     - name: worker.serverURI
       value: 'http://conductor-server:8080/api/'
+    - name: TWILIO_ACCOUNT_SID
+      value: 'TO_BE_ADDED'
+    - name: TWILIO_AUTH_TOKEN
+      value: 'TO_BE_ADDED'
     - name: twilio.senderPhoneNumber
       value: '+18777096391'
     - name: twilio.endpoints.statusCallbackUrl
@@ -1505,10 +1526,19 @@ presentationlayer:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/presentation-layer
     pullPolicy: IfNotPresent
-    tag: "0c047efa"
+    tag: "dd042c01"
   env:
     - name: CACHE_SERVICE_URL
       value: 'http://rengage-cache:8080/api'
+    - name: XXL_JOB_EXECUTOR_PORT
+      value: '9999'
+    - name: XXL_JOB_ADMIN_ADDRESSES
+      value: >-
+        http://rengage-xxl-job-admin:8080/xxl-job-admin
+    - name: XXL_JOB_EXECUTOR_APPNAME
+      value: presentation-layer-executor
+    - name: XXL_JOB_ACCESS_TOKEN
+      value: default_token
     - name: DATABASE_URL
       value: 'jdbc:mysql://mysql:3306/presentationlayer?useSSL=false'
     - name: DATABASE_USERNAME
