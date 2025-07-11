@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.presentationlayer.service.type }}
   ports:
     - port: {{ .Values.presentationlayer.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.presentationlayer.service.port }}
       protocol: TCP
       name: http
   selector:
@@ -29,7 +29,7 @@ spec:
   type: {{ .Values.presentationlayer.service.type }}
   ports:
     - port: {{ .Values.presentationlayer.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.presentationlayer.service.port }}
       protocol: TCP
       name: http
   selector:

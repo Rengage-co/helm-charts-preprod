@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.managedexperimentworker.service.type }}
   ports:
     - port: {{ .Values.managedexperimentworker.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.managedexperimentworker.service.port }}
       protocol: TCP
       name: http
   selector:

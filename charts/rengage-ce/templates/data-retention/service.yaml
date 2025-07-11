@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.dataretention.service.type }}
   ports:
     - port: {{ .Values.dataretention.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.dataretention.service.port }}
       protocol: TCP
       name: http
   selector:

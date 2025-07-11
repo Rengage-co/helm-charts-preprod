@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.pushworker.service.type }}
   ports:
     - port: {{ .Values.pushworker.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.pushworker.service.port }}
       protocol: TCP
       name: http
   selector:
