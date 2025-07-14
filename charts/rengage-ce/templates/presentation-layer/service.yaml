@@ -28,7 +28,7 @@ metadata:
 spec:
   type: {{ .Values.presentationlayer.service.type }}
   ports:
-    - port: {{ .Values.presentationlayer.service.port }}
+    - port: 80
       targetPort: {{ .Values.presentationlayer.service.port }}
       protocol: TCP
       name: http
