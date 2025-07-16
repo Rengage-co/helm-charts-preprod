@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "rengage-ce-depandency.name" -}}
+{{- define "rengage-ce-dependency.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "rengage-ce-depandency.fullname" -}}
+{{- define "rengage-ce-dependency.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "rengage-ce-depandency.chart" -}}
+{{- define "rengage-ce-dependency.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "rengage-ce-depandency.labels" -}}
-helm.sh/chart: {{ include "rengage-ce-depandency.chart" . }}
-{{ include "rengage-ce-depandency.selectorLabels" . }}
+{{- define "rengage-ce-dependency.labels" -}}
+helm.sh/chart: {{ include "rengage-ce-dependency.chart" . }}
+{{ include "rengage-ce-dependency.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "rengage-ce-depandency.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "rengage-ce-depandency.name" . }}
+{{- define "rengage-ce-dependency.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "rengage-ce-dependency.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "rengage-ce-depandency.serviceAccountName" -}}
+{{- define "rengage-ce-dependency.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "rengage-ce-depandency.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "rengage-ce-dependency.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
