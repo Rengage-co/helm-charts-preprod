@@ -31,6 +31,11 @@ Rengage CE is built on a scalable microservices architecture deployed and manage
 
 To deploy Rengage CE with minimal load:
 
+<<<<<<< HEAD
+To install the rengage-ce-dependency chart:
+
+    helm install my-rengage-ce-dep rengage-preprod/rengage-ce-dependency
+=======
 **Option 1: Single-node cluster**
 - 16 CPU cores  
 - 64 GB memory
@@ -40,6 +45,7 @@ To deploy Rengage CE with minimal load:
 - Each with:  
   - 8 CPU cores  
   - 32 GB memory
+>>>>>>> 9fd657ad165494356cd314fda87a01de4f3df3b7
 
 > For production or high-traffic environments, allocate additional resources based on expected load.
 
