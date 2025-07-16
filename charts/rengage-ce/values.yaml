@@ -780,7 +780,7 @@ frontend:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/react-demo
     pullPolicy: IfNotPresent
-    tag: "48fa22f7"
+    tag: "e5338724"
   env: []
   imagePullSecrets: []
   podAnnotations: {}
@@ -1526,8 +1526,10 @@ presentationlayer:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/presentation-layer
     pullPolicy: IfNotPresent
-    tag: "a7cd0799"
+    tag: "e9a19cd6"
   env:
+    - name: CLICKHOUSE_ENV
+      value: 'preprod'
     - name: CACHE_SERVICE_URL
       value: 'http://rengage-cache:8080/api'
     - name: XXL_JOB_EXECUTOR_PORT
