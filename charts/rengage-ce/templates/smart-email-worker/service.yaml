@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.smartemailworker.service.type }}
   ports:
     - port: {{ .Values.smartemailworker.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.smartemailworker.service.port }}
       protocol: TCP
       name: http
   selector:

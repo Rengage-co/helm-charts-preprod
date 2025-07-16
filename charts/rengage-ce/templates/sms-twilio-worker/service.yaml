@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.smsworker.service.type }}
   ports:
     - port: {{ .Values.smsworker.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.smsworker.service.port }}
       protocol: TCP
       name: http
   selector:

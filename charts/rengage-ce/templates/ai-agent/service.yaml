@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.aiagent.service.type }}
   ports:
     - port: {{ .Values.aiagent.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.aiagent.service.port }}
       protocol: TCP
       name: http
   selector:

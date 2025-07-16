@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.comment.service.type }}
   ports:
     - port: {{ .Values.comment.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.comment.service.port }}
       protocol: TCP
       name: http
   selector:

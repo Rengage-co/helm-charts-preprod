@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.emailworker.service.type }}
   ports:
     - port: {{ .Values.emailworker.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.emailworker.service.port }}
       protocol: TCP
       name: http
   selector:

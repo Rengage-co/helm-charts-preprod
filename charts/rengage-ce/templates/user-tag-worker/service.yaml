@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.usertagworker.service.type }}
   ports:
     - port: {{ .Values.usertagworker.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.usertagworker.service.port }}
       protocol: TCP
       name: http
   selector:

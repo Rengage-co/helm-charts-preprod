@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.ingestwebhook.service.type }}
   ports:
     - port: {{ .Values.ingestwebhook.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.ingestwebhook.service.port }}
       protocol: TCP
       name: http
   selector:

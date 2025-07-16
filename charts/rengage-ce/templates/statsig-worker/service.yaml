@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.statsigworker.service.type }}
   ports:
     - port: {{ .Values.statsigworker.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.statsigworker.service.port }}
       protocol: TCP
       name: http
   selector:

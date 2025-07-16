@@ -10,7 +10,26 @@ spec:
   type: {{ .Values.presentationlayer.service.type }}
   ports:
     - port: {{ .Values.presentationlayer.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.presentationlayer.service.port }}
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ printf "%s-presentationlayer" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: presentation-layer
+  labels:
+    app.kubernetes.io/name: presentation-layer
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.presentationlayer.service.type }}
+  ports:
+    - port: 80
+      targetPort: {{ .Values.presentationlayer.service.port }}
       protocol: TCP
       name: http
   selector:

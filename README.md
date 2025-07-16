@@ -3,6 +3,26 @@
 [Helm](https://helm.sh) must be installed to use the charts.  Please refer to
 Helm's [documentation](https://helm.sh/docs) to get started.
 
+---
+
+### 📌 Minimum System Requirements
+
+To successfully run the Rengage CE charts in a Kubernetes cluster, the following minimum system resources are required:
+
+- **Option 1: Single node**
+  - 16 CPU cores
+  - 64 GB memory
+
+- **Option 2: Multi-node cluster**
+  - At least 2 Kubernetes worker nodes
+  - Each with:
+    - 8 CPU cores
+    - 32 GB memory
+
+These requirements ensure that all services can be scheduled and operate reliably under lightweight workloads. For production deployments with higher traffic or larger datasets, consider provisioning additional resources.
+
+---
+
 Once Helm has been set up correctly, add the repo as follows:
 
     helm repo add rengage-preprod https://Rengage-co.github.io/helm-charts-preprod
@@ -10,6 +30,10 @@ Once Helm has been set up correctly, add the repo as follows:
 If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
 rengage` to see the charts.
+
+Before running the helm install, you need to execute the following command to load the Firebase service_account information. To create the required `secret.yaml` file, please contact our support team. 
+
+    kubectl apply -f secret.yaml
 
 To install the rengage-ce-depandency chart:
 
