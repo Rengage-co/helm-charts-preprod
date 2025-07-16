@@ -780,7 +780,7 @@ frontend:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/react-demo
     pullPolicy: IfNotPresent
-    tag: "e5338724"
+    tag: "5f2c1e6d"
   env: []
   imagePullSecrets: []
   podAnnotations: {}
