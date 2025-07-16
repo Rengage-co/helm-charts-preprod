@@ -173,7 +173,7 @@ dataprocessinglayer:
     - name: dataprocessinglayer.env
       value: prod_
     - name: spring.data.redis.host
-      value: redis
+      value: redis-master
     - name: spring.data.redis.port
       value: '6379'
     - name: spring.data.redis.timeout
@@ -287,9 +287,9 @@ cache:
     - name: CACHE_PREFIX
       value: prod_
     - name: SPRING_DATA_REDIS_HOST
-      value: valkey-user-profile-cache-internal.rengage.ai
+      value: redis-master
     - name: SPRING_DATA_REDIS_PASSWORD
-      value: Reng@ge123456
+      value:
     - name: SPRING_DATA_REDIS_PORT
       value: '6379'
     - name: SPRING_DATA_REDIS_TIMEOUT
@@ -389,7 +389,7 @@ conductor:
     - name: event.thread.pool.size
       value: "150"
     - name: conductor.redis.hosts
-      value: rengage-prod-redis-2-gxdy23.serverless.usw2.cache.amazonaws.com:6379:us-west-2a
+      value: redis-master:6379:111
     - name: conductor.redis.isSSL
       value: "true"
     - name: conductor.redis.isQueueRedisSSL
@@ -399,7 +399,7 @@ conductor:
     - name: journey-insight.db.type
       value: kafka
     - name: journey-insight.kafka.bootstrapServers
-      value: kafka-internal.rengage.ai:9092
+      value: kafka:9092
     - name: journey-insight.kafka.topic
       value: user-journey-log-prod
     - name: conductor.event-queues.sqs.batchSize
@@ -419,7 +419,7 @@ conductor:
     - name: conductor.indexing.enabled
       value: "true"
     - name: conductor.elasticsearch.url
-      value: https://rengage-es-8.es.vpce.us-west-2.aws.elastic-cloud.com:443
+      value: http://elastic-master
     - name: conductor.elasticsearch.username
       value: elastic
     - name: conductor.elasticsearch.password
@@ -666,7 +666,7 @@ consumer:
     - name: spring.kafka.consumer.retry.topic
       value: metadata_retry_queue_prod
     - name: conductor_server_api_url
-      value: 'http://conductor-server:8080/api/queue'
+      value: 'http://rengage-conductor:8080/api/queue'
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -823,11 +823,11 @@ blocfree:
     tag: "314a431c_20250417042158"
   env:
     - name: RENGAGE_PRESENTATION_LAYER_URL
-      value: 'http://presentation-layer:8080'
+      value: 'http://rengage-presentationlayer:8080'
     - name: DATABASE_URL
       value: 'mysql://root:password@mysql:3306/blocfree?sslaccept=strict'
     - name: RENGAGE_TEMPLATE_URL
-      value: 'http://template-service:8082/api/template'
+      value: 'http://rengage-template:8082/api/template'
     - name: WEB_FETCH_URL
       value: 'http://web-fetch:3000'
     - name: NEXT_PUBLIC_POSTHOG_API_KEY
@@ -1014,7 +1014,7 @@ usertagworker:
     - name: worker.pollIntervalInMilliseconds
       value: '100'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: clickhouse.jdbcUrl
       value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
     - name: clickhouse.username
@@ -1066,15 +1066,15 @@ emailworker:
       value: >-
         TO_BE_ADDED
     - name: worker.service.rendering.contentHubBackendURL
-      value: 'http://presentation-layer:8080/graphql'
+      value: 'http://rengage-presentationlayer:8080/graphql'
     - name: worker.service.rendering.contentHubBackendInternalToken
       value: 'Bearer KnrtohXq9Lz6kIBdT6FNbNEYOJMBARJ7-sMAkFwIAU974w5EIRFc0JmU2ac0DulKM-VJuk4q4r54D3MyqBHRyozcMf8cjmJIGD'
     - name: worker.service.rendering.contentHubBackendTenantDomain
       value: renuity
     - name: worker.service.rendering.cacheUrl
-      value: 'http://cache-service:8080/api/cache/get'
+      value: 'http://rengage-cache:8080/api/cache/get'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: clickhouse.server.url
       value: 'http://clickhouse:8123?user=default&password=password'
     - name: spring.kafka.bootstrap-servers
@@ -1088,7 +1088,7 @@ emailworker:
     - name: worker.service.email.sendgrid.unSubscribeGroupId
       value: '27469'
     - name: worker.service.email.sendgrid.dataProcessingServerUrl
-      value: 'https://ingestwebhook:8080/api/v1/email/webhook'
+      value: 'https://rengage-ingestwebhook:8080/api/v1/email/webhook'
     - name: insights.env
       value: prod
     - name: worker.suppressedUJsUuid
@@ -1135,7 +1135,7 @@ pushworker:
     - name: worker.pollIntervalInMilliseconds
       value: '100'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: GOOGLE_APPLICATION_CREDENTIALS
       value: /app/secret/serviceAccountKey.json
     - name: push.dataProcessingServerUrl
@@ -1199,7 +1199,7 @@ managedexperimentworker:
     - name: worker.pollIntervalInMilliseconds
       value: '100'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -1242,9 +1242,9 @@ renderingworker:
     - name: worker.pollIntervalInMilliseconds
       value: '100'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: worker.service.rendering.contentHubBackendURL
-      value: 'http://presentation-layer:8080/graphql'
+      value: 'http://rengage-presentationlayer:8080/graphql'
     - name: worker.service.rendering.mjmlBackendURL
       value: 'http://mjml-server'
     - name: worker.service.rendering.contentHubBackendInternalToken
@@ -1252,7 +1252,7 @@ renderingworker:
     - name: worker.service.rendering.contentHubBackendTenantDomain
       value: renuity
     - name: worker.service.rendering.cacheUrl
-      value: 'http://cache-service:8080/api/cache/get'
+      value: 'http://rengage-cache:8080/api/cache/get'
     - name: spring.kafka.bootstrap-servers
       value: 'kafka:9092'
     - name: spring.kafka.consumer.max-poll-records
@@ -1303,7 +1303,7 @@ smartemailworker:
     - name: worker.pollIntervalInMilliseconds
       value: '100'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: spring.data.redis.ssl
       value: 'true'
     - name: spring.data.redis.host
@@ -1372,7 +1372,7 @@ smartpushworker:
     - name: worker.pollIntervalInMilliseconds
       value: '100'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: spring.data.redis.ssl
       value: 'true'
     - name: spring.data.redis.host
@@ -1439,7 +1439,7 @@ smsworker:
     - name: worker.pollIntervalInMilliseconds
       value: '100'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: TWILIO_ACCOUNT_SID
       value: 'TO_BE_ADDED'
     - name: TWILIO_AUTH_TOKEN
@@ -1494,7 +1494,7 @@ statsigworker:
     - name: worker.pollIntervalInMilliseconds
       value: '100'
     - name: worker.serverURI
-      value: 'http://conductor-server:8080/api/'
+      value: 'http://rengage-conductor:8080/api/'
     - name: statsig.serverApiKey
       value: secret-5JWx9pqnTMasH3xt7d5lb5sT4LtnOxkV32xc1S0XFXj
   imagePullSecrets: []
@@ -1686,7 +1686,7 @@ userconsumer:
     tag: "c0e51be"
   env:
     - name: user.cache.url
-      value: 'http://cache-service:8080/api/cache'
+      value: 'http://rengage-cache:8080/api/cache'
     - name: spring.kafka.consumer.user-profile.num
       value: '2'
     - name: spring.kafka.consumer.user-event.num
