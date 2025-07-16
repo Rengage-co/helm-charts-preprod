@@ -780,7 +780,7 @@ frontend:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/react-demo
     pullPolicy: IfNotPresent
-    tag: "23b47588_prod"
+    tag: "48fa22f7"
   env: []
   imagePullSecrets: []
   podAnnotations: {}
@@ -1526,7 +1526,7 @@ presentationlayer:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/presentation-layer
     pullPolicy: IfNotPresent
-    tag: "dd042c01"
+    tag: "a7cd0799"
   env:
     - name: CACHE_SERVICE_URL
       value: 'http://rengage-cache:8080/api'
