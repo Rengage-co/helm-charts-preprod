@@ -1648,8 +1648,7 @@ presentationlayer:
         -Djava.rmi.server.hostname=127.0.0.1 -Xmx4g
         -XX:+ExplicitGCInvokesConcurrent
   imagePullSecrets: []
-  podAnnotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: '50M'
+  podAnnotations: {}
   podLabels: {}
   podSecurityContext: {}
   securityContext: {}
