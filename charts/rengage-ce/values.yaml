@@ -1649,7 +1649,7 @@ presentationlayer:
         -XX:+ExplicitGCInvokesConcurrent
   imagePullSecrets: []
   podAnnotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: 50M
+    nginx.ingress.kubernetes.io/proxy-body-size: '50M'
   podLabels: {}
   podSecurityContext: {}
   securityContext: {}
