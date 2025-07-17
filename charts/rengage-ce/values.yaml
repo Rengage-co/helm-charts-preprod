@@ -370,11 +370,13 @@ comment:
       value: password
     - name: DATABASE_URL
       value: >-
-        'jdbc:mysql://mysql:3306/blocfree_rengage?useSSL=false'
+        jdbc:mysql://mysql:3306/blocfree_rengage?useSSL=false
     - name: DATABASE_USERNAME
       value: root
     - name: RENGAGE_USER_URL
       value: 'http://rengage-presentationlayer:8080'
+    - name: RENGAGE_COMMENT_URL
+      value: 'http://rengage-comment:8083/api/comment'
     - name: RENGAGE_TEMPLATE_URL
       value: 'http://rengage-template:8082/api/template'
     - name: RENGAGE_BILL_URL
@@ -529,7 +531,7 @@ conductorconsumer:
     tag: "b273c13"
   env:
     - name: DATABASE_URL
-      value: 'jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false'
+      value: jdbc:clickhouse://clickhouse:8123?compress=0&ssl=false
     - name: DATABASE_USERNAME
       value: default
     - name: DATABASE_PASSWORD
@@ -1689,13 +1691,15 @@ template:
       value: 'password'
     - name: DATABASE_URL
       value: >-
-        'jdbc:mysql://mysql:3306/blocfree_rengage?useSSL=false'
+        jdbc:mysql://mysql:3306/blocfree_rengage?useSSL=false
     - name: DATABASE_USERNAME
       value: root
     - name: RENGAGE_USER_URL
       value: 'http://rengage-presentationlayer:8080'
     - name: RENGAGE_COMMENT_URL
       value: 'http://rengage-comment:8083/api/comment'
+    - name: RENGAGE_TEMPLATE_URL
+      value: 'http://rengage-template:8082/api/comment'
     - name: RENGAGE_BILL_URL
       value: 'http://rengage-bill:8084/api/bill'
     - name: HUBSPOT_CLIENTID
