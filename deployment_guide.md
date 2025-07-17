@@ -6,7 +6,7 @@ The Rengage product is deployed to Kubernetes using Helm charts. This guide expl
 
 ## Architecture Components
 
-- **rengage-ce-depandency**: Core dependencies (e.g., Redis)
+- **rengage-ce-dependency**: Core dependencies (e.g., Redis)
 - **rengage-ce**: Main Rengage application and microservices
 - **prometheus**: Monitoring stack
 
@@ -28,7 +28,7 @@ helm repo update
 ### 2. Install Dependencies
 
 ```bash
-helm install my-rengage-ce-dep rengage-preprod/rengage-ce-depandency
+helm install my-rengage-ce-dep rengage-preprod/rengage-ce-dependency
 ```
 
 ### 3. Install the Main Application
@@ -102,7 +102,7 @@ nginx:
 
 ## Dependency Chart
 
-`rengage-ce-depandency` allows configuration of Redis and other dependencies.
+`rengage-ce-dependency` allows configuration of Redis and other dependencies.
 
 ## How to View All Configurable Options
 

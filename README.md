@@ -1,61 +1,196 @@
-## Usage
-
-[Helm](https://helm.sh) must be installed to use the charts.  Please refer to
-Helm's [documentation](https://helm.sh/docs) to get started.
+# Rengage CE Deployment Guide
 
 ---
 
-### 📌 Minimum System Requirements
+## Overview
 
-To successfully run the Rengage CE charts in a Kubernetes cluster, the following minimum system resources are required:
+**Rengage Community Edition (CE)** is a self-hosted version of Rengage that can be deployed within a customer's infrastructure. This enables customers to manage Rengage securely in their own environment instead of relying on the cloud-hosted solution.
 
-- **Option 1: Single node**
-  - 16 CPU cores
-  - 64 GB memory
-
-- **Option 2: Multi-node cluster**
-  - At least 2 Kubernetes worker nodes
-  - Each with:
-    - 8 CPU cores
-    - 32 GB memory
-
-These requirements ensure that all services can be scheduled and operate reliably under lightweight workloads. For production deployments with higher traffic or larger datasets, consider provisioning additional resources.
+Rengage CE is built on a scalable microservices architecture deployed and managed via Kubernetes. It provides core functionality such as:
+- Audience management  
+- Content editing  
+- Journey orchestration  
+- Delivery channel integration  
+- Agentic workflows
 
 ---
 
-Once Helm has been set up correctly, add the repo as follows:
+## Architecture & Requirements
 
-    helm repo add rengage-preprod https://Rengage-co.github.io/helm-charts-preprod
+### Components
+- `rengage-ce-depandency`: Core dependencies required to run Rengage (e.g., Redis)  
+- `rengage-ce`: Main Rengage services and APIs  
+- `prometheus`: Monitoring infrastructure
 
-If you had already added this repo earlier, run `helm repo update` to retrieve
-the latest versions of the packages.  You can then run `helm search repo
-rengage` to see the charts.
+### Prerequisites
+- Kubernetes cluster (v1.19 or higher)  
+- Helm (v3.7 or higher)  
+- `kubectl` access to your Kubernetes cluster
 
-Before running the helm install, you need to execute the following command to load the Firebase service_account information. To create the required `secret.yaml` file, please contact our support team. 
+### Minimum System Requirements
 
-    kubectl apply -f secret.yaml
+To deploy Rengage CE with minimal load:
 
-To install the rengage-ce-depandency chart:
+To install the rengage-ce-dependency chart:
+    helm install my-rengage-ce-dep rengage-preprod/rengage-ce-dependency
 
-    helm install my-rengage-ce-dep rengage-preprod/rengage-ce-depandency
+**Option 1: Single-node cluster**
+- 16 CPU cores  
+- 64 GB memory
 
-To install the rengage-ce chart:
+**Option 2: Multi-node cluster**
+- At least 2 Kubernetes worker nodes  
+- Each with:  
+  - 8 CPU cores  
+  - 32 GB memory
 
-    helm install my-rengage-ce rengage-preprod/rengage-ce
+> For production or high-traffic environments, allocate additional resources based on expected load.
 
-To download the rengage-ce chart values:
+---
 
-    helm show values rengage-preprod/rengage-ce > my-values.yaml
+## Quick Start
 
-To install the rengage-ce chart with customized values:
+### 1. Install Helm
+If Helm is not already installed, refer to the official [Helm documentation](https://helm.sh/docs/) for setup instructions.
 
-    helm install my-rengage-ce rengage-preprod/rengage-ce -f my-values.yaml
-    
-To upgrade the rengage-ce chart:
+> Helm charts are package bundles that simplify deploying Kubernetes applications with templated resources and configurable values.
 
-    helm upgrade my-rengage-ce rengage-preprod/rengage-ce -f my-values.yaml
+### 2. Add Rengage Helm Repository
+```bash
+helm repo add rengage-preprod https://Rengage-co.github.io/helm-charts-preprod
+helm repo update
+```
 
-To uninstall the chart:
+> If you've already added the repo before, just run `helm repo update` to ensure you have the latest chart versions.
 
-    helm uninstall my-rengage-ce
-    helm uninstall my-rengage-ce-dep
+### 3. Load Firebase Credentials
+Before installation, you must apply the Firebase `service_account` credentials via a secret file.  
+Contact support to get the required `secret.yaml`.
+
+```bash
+kubectl apply -f secret.yaml
+```
+
+### 4. Install Dependencies
+Install Rengage CE dependencies (e.g., Redis):
+
+```bash
+helm install my-rengage-ce-dep rengage-preprod/rengage-ce-depandency
+```
+
+### 5. Install the Main Application
+Deploy the Rengage CE services:
+
+```bash
+helm install my-rengage-ce rengage-preprod/rengage-ce
+```
+
+### 6. Customize Configuration (Optional)
+
+Download the default values file:
+
+```bash
+helm show values rengage-preprod/rengage-ce > my-values.yaml
+```
+
+Make your changes in `my-values.yaml` and install using:
+
+```bash
+helm install my-rengage-ce rengage-preprod/rengage-ce -f my-values.yaml
+```
+
+To upgrade the deployment after editing:
+
+```bash
+helm upgrade my-rengage-ce rengage-preprod/rengage-ce -f my-values.yaml
+```
+
+---
+
+## Uninstall Rengage CE
+
+To completely remove your deployment:
+
+```bash
+helm uninstall my-rengage-ce
+helm uninstall my-rengage-ce-dep
+```
+
+---
+
+## Configuration Options
+
+You can customize most aspects of your deployment via `values.yaml` or `--set` flags.
+
+### Microservice Configuration
+
+Each Rengage microservice (e.g., `nginx`, `aiagent`, `comment`, `frontend`, `template`, etc.) supports the following keys:
+
+- `replicaCount`  
+- `image.repository`, `image.tag`, `image.pullPolicy`  
+- `env`: Environment variables  
+- `imagePullSecrets`: For private image registries  
+- `podAnnotations`, `podLabels`: Metadata  
+- `podSecurityContext`, `securityContext`  
+- `resources`: CPU and memory requests/limits  
+- `livenessProbe`, `readinessProbe`: Health checks  
+- `autoscaling`: Enable HPA with min/max replicas  
+- `volumes`, `volumeMounts`
+
+### Service Configuration
+- `service.type`: `ClusterIP`, `NodePort`, or `LoadBalancer`  
+- `service.port`: Custom port settings
+
+### Ingress Configuration
+- `ingress.enabled`  
+- `ingress.className`  
+- `ingress.annotations`  
+- `ingress.hosts`: Define routes and paths  
+- `ingress.tls`: For HTTPS termination
+
+---
+
+## Example: Customizing a Microservice
+
+```yaml
+nginx:
+  replicaCount: 2
+  image:
+    repository: myrepo/nginx
+    tag: "1.21"
+  env:
+    - name: ENV1
+      value: "value1"
+  service:
+    type: LoadBalancer
+    port: 8080
+  ingress:
+    enabled: true
+    hosts:
+      - host: my-nginx.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: my-nginx-tls
+        hosts:
+          - my-nginx.example.com
+```
+
+---
+
+## Dependency Chart Configuration
+
+The `rengage-ce-depandency` chart allows customization of Redis and other system-level dependencies.
+
+---
+
+## View All Available Options
+
+To inspect all configurable parameters:
+
+```bash
+helm show values rengage-preprod/rengage-ce > my-values.yaml
+```
+
+Edit and install/upgrade using the customized file.
