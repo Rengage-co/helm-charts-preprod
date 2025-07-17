@@ -340,7 +340,7 @@ cache:
   securityContext: {}
   service:
     type: ClusterIP
-    port: 80
+    port: 8080
   ingress:
     enabled: false
     className: ""
@@ -367,12 +367,12 @@ comment:
     tag: "2025-01-20-1"
   env:
     - name: DATABASE_PASSWORD
-      value: TO_BE_ADDED
+      value: password
     - name: DATABASE_URL
       value: >-
-        TO_BE_ADDED
+        'jdbc:mysql://mysql:3306/blocfree_rengage?useSSL=false'
     - name: DATABASE_USERNAME
-      value: admin
+      value: root
     - name: RENGAGE_USER_URL
       value: 'http://rengage-presentationlayer:8080'
     - name: RENGAGE_TEMPLATE_URL
@@ -380,7 +380,7 @@ comment:
     - name: RENGAGE_BILL_URL
       value: 'http://rengage-bill:8084/api/bill'
     - name: sendGridApiKey
-      value: ""
+      value: TO_BE_ADDED
     - name: senderEmail
       value: TO_BE_ADDED
     - name: GOOGLE_APPLICATION_CREDENTIALS
@@ -1686,12 +1686,12 @@ template:
     tag: "2025-04-23"
   env:
     - name: DATABASE_PASSWORD
-      value: TO_BE_ADDED
+      value: 'password'
     - name: DATABASE_URL
       value: >-
-        TO_BE_ADDED
+        'jdbc:mysql://mysql:3306/blocfree_rengage?useSSL=false'
     - name: DATABASE_USERNAME
-      value: admin
+      value: root
     - name: RENGAGE_USER_URL
       value: 'http://rengage-presentationlayer:8080'
     - name: RENGAGE_COMMENT_URL
