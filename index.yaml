@@ -66,6 +66,18 @@ entries:
   rengage-ce:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-07-17T09:25:20.119278522Z"
+    description: A Helm chart for deploying Rengage CE (Community Edition)
+    digest: 03384c84754ef4d95e3ce7b449ab64b3ccb9e53e3b9f8534c554d27c2fe907df
+    home: https://rengage.ai/
+    icon: https://rengage.ai/img/logo.svg
+    name: rengage-ce
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.3.18/rengage-ce-0.3.18.tgz
+    version: 0.3.18
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-07-17T09:06:45.493829249Z"
     description: A Helm chart for deploying Rengage CE (Community Edition)
     digest: e6b376df76087f2bfb53bd844d13e4b46d84243732e069433de490a3e4c0ae31
@@ -1295,4 +1307,4 @@ entries:
     urls:
     - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-dependency-0.3.0/rengage-ce-dependency-0.3.0.tgz
     version: 0.3.0
-generated: "2025-07-17T09:06:45.494090121Z"
+generated: "2025-07-17T09:25:20.119546817Z"
