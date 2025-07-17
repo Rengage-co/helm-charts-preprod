@@ -66,6 +66,18 @@ entries:
   rengage-ce:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-07-17T05:16:18.958240689Z"
+    description: A Helm chart for deploying Rengage CE (Community Edition)
+    digest: c234f7fb2d32f40d77a41c27a02cb20dd64a6beb6680937c9487bdb529e9ec15
+    home: https://rengage.ai/
+    icon: https://rengage.ai/img/logo.svg
+    name: rengage-ce
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-0.3.14/rengage-ce-0.3.14.tgz
+    version: 0.3.14
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-07-16T22:40:55.553000261Z"
     description: A Helm chart for deploying Rengage CE (Community Edition)
     digest: c27e8f3937006afeadbc1e44eb19ec22409d4eda1f9949616f0e21bc82557132
@@ -1175,6 +1187,43 @@ entries:
   rengage-ce-dependency:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2025-07-17T05:16:19.13634755Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 21.2.*
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.*
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.0.*
+    - condition: clickhouse.enabled
+      name: clickhouse
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.3.*
+    - condition: kafka.enabled
+      name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 32.2.*
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.0.*
+    description: A Helm chart for deploying Rengage CE (Community Edition) depandencies
+    digest: 572d7bc515514ef84209d4486a2f29df4b8a35ea46075cfa761b7af9b14b7e52
+    home: https://rengage.ai/
+    icon: https://rengage.ai/img/logo.svg
+    name: rengage-ce-dependency
+    type: application
+    urls:
+    - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-dependency-0.3.1/rengage-ce-dependency-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2025-07-16T22:40:55.717732122Z"
     dependencies:
     - condition: redis.enabled
@@ -1210,4 +1259,4 @@ entries:
     urls:
     - https://github.com/Rengage-co/helm-charts-preprod/releases/download/rengage-ce-dependency-0.3.0/rengage-ce-dependency-0.3.0.tgz
     version: 0.3.0
-generated: "2025-07-16T22:40:55.717986959Z"
+generated: "2025-07-17T05:16:19.136655408Z"
