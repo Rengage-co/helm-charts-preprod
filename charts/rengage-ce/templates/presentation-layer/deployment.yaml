@@ -6,6 +6,8 @@ metadata:
     app.kubernetes.io/name: {{ printf "%s-presentationlayer" (include "rengage-ce.name" .) }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "rengage-ce.labels" . | nindent 4 }}
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "50M"
 spec:
   {{- if not .Values.presentationlayer.autoscaling.enabled }}
   replicas: {{ .Values.presentationlayer.replicaCount }}

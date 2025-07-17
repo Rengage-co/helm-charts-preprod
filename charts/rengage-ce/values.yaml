@@ -124,12 +124,27 @@ nginx:
   #   mountPath: "/etc/foo"
   #   readOnly: true
 
-# kube-prometheus-stack:
-#   enabled: true
-#   grafana:
-#     adminUser: admin
-#     adminPassword: password
-
+global:
+  redis:
+    host: ''
+    port: ''
+    username: ''
+    password: ''
+    ssl: ''
+  clickhouse:
+    host: ''
+    port: ''
+    username: ''
+    password: ''
+    ssl: ''
+  mysql:
+    host: ''
+    port: ''
+    username: ''
+    password: ''
+    ssl: ''
+  kafka:
+  minio:
 
 dataprocessinglayer:
   replicaCount: 1
@@ -347,10 +362,31 @@ cache:
 comment:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/comment-service
     pullPolicy: IfNotPresent
-    tag: ""
-  env: []
+    tag: "2025-01-20-1"
+  env:
+    - name: DATABASE_PASSWORD
+      value: TO_BE_ADDED
+    - name: DATABASE_URL
+      value: >-
+        TO_BE_ADDED
+    - name: DATABASE_USERNAME
+      value: admin
+    - name: RENGAGE_USER_URL
+      value: 'http://rengage-presentationlayer:8080'
+    - name: RENGAGE_TEMPLATE_URL
+      value: 'http://rengage-template:8082/api/template'
+    - name: RENGAGE_COMMENT_URL
+      value: 'http://rengage-comment:8083/api/comment'
+    - name: RENGAGE_BILL_URL
+      value: 'http://rengage-bill:8084/api/bill'
+    - name: sendGridApiKey
+      value: ""
+    - name: senderEmail
+      value: TO_BE_ADDED
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: /google-app-credential/service_account.json
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -374,8 +410,15 @@ comment:
   readinessProbe: {}
   autoscaling:
     enabled: false
-  volumes: []
-  volumeMounts: []
+  volumes:
+    - name: comment-google-app-credential
+      secret:
+        secretName: google-app-credential
+        defaultMode: 420
+  volumeMounts:
+    - mountPath: /google-app-credential/service_account.json
+      name: comment-google-app-credential
+      subPath: service_account.json
 
 conductor:
   replicaCount: 2
@@ -844,15 +887,7 @@ blocfree:
       value: 'TO_BE_ADDED'
     - name: NEXT_PUBLIC_FIREBASE
       value: |-
-        {
-          "apiKey": "AIzaSyBVkLq81VKPX3-GK8S01hdKsUEXNuzO_v8",
-          "authDomain": "blocfree-3c27a.firebaseapp.com",
-          "projectId": "blocfree-3c27a",
-          "storageBucket": "blocfree-3c27a.appspot.com",
-          "messagingSenderId": "260985724614",
-          "appId": "1:260985724614:web:48df7494658b795953c1c7",
-          "measurementId": "G-5SR1C1LMM4"
-        }
+        TO_BE_ADDED
     - name: FIREBASE_JSON
       value: 'TO_BE_ADDED'
     - name: NEXT_PUBLIC_GOOGLE_CLIENT_ID
@@ -1496,7 +1531,7 @@ statsigworker:
     - name: worker.serverURI
       value: 'http://rengage-conductor:8080/api/'
     - name: statsig.serverApiKey
-      value: secret-5JWx9pqnTMasH3xt7d5lb5sT4LtnOxkV32xc1S0XFXj
+      value: TO_BE_ADDED
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -1648,10 +1683,55 @@ presentationlayer:
 template:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/template-service
     pullPolicy: IfNotPresent
-    tag: ""
-  env: []
+    tag: "2025-04-23"
+  env:
+    - name: DATABASE_PASSWORD
+      value: TO_BE_ADDED
+    - name: DATABASE_URL
+      value: >-
+        TO_BE_ADDED
+    - name: DATABASE_USERNAME
+      value: admin
+    - name: RENGAGE_USER_URL
+      value: 'http://rengage-presentationlayer:8080'
+    - name: RENGAGE_TEMPLATE_URL
+      value: 'http://rengage-template:8082/api/template'
+    - name: RENGAGE_COMMENT_URL
+      value: 'http://rengage-comment:8083/api/comment'
+    - name: RENGAGE_BILL_URL
+      value: 'http://rengage-bill:8084/api/bill'
+    - name: HUBSPOT_CLIENTID
+      value: TO_BE_ADDED
+    - name: HUBSPOT_CLIENTSECRET
+      value: TO_BE_ADDED
+    - name: sendGridApiKey
+      value: >-
+        TO_BE_ADDED
+    - name: senderEmail
+      value: TO_BE_ADDED
+    - name: GOOGLE_CLIENTID
+      value: >-
+        TO_BE_ADDED
+    - name: GOOGLE_CLIENTSECRET
+      value: TO_BE_ADDED
+    - name: MILVUS_COLLECTION_NAME
+      value: blocfree_prod_email_mjml
+    - name: MILVUS_HOST
+      value: TO_BE_ADDED
+    - name: MILVUS_PORT
+      value: '19530'
+    - name: MILVUS_USERNAME
+      value: root
+    - name: MILVUS_PASSWORD
+      value: Milvus
+    - name: CACHE_REFRESH_TOPIC
+      value: template_cache_prod
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: 'kafka:9092'
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: /google-app-credential/service_account.json
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
@@ -1675,8 +1755,15 @@ template:
   readinessProbe: {}
   autoscaling:
     enabled: false
-  volumes: []
-  volumeMounts: []
+  volumes:
+    - name: template-google-app-credential
+      secret:
+        secretName: google-app-credential
+        defaultMode: 420
+  volumeMounts:
+    - mountPath: /google-app-credential/service_account.json
+      name: template-google-app-credential
+      subPath: service_account.json
 
 userconsumer:
   replicaCount: 1
