@@ -245,9 +245,9 @@ aiagent:
     - name: DATABASE_URL
       value: mysql://root:password@mysql:3306/presentationlayer?useSSL=false
     - name: FEEDMANAGER_BASEURL
-      value: 'http://feedmanager'
+      value: 'http://rengage-feedmanager:8080'
     - name: OPENAI_API_KEY
-      value: ''
+      value: TO_BE_ADDED
     - name: CLICKHOUSE_PROTOCOL
       value: 'https:'
     - name: CLICKHOUSE_HOST
@@ -292,9 +292,9 @@ cache:
     tag: "3ea4ec6a_20250422102227"
   env:
     - name: OTEL_EXPORTER_OTLP_ENDPOINT
-      value: 'https://6e3256b8aa56412dba45b16b4c85efb4.apm.us-west-2.aws.cloud.es.io:443'
+      value: TO_BE_ADDED
     - name: OTEL_EXPORTER_OTLP_HEADERS_AUTHORIZATION
-      value: Bearer yfOpxQEvLYmi4EZftW
+      value: TO_BE_ADDED
     - name: OTEL_EXPORTER_OTLP_DEPLOYMENT_ENVIRONMENT
       value: prod
     - name: CACHE_TTL_DAYS
@@ -304,7 +304,7 @@ cache:
     - name: SPRING_DATA_REDIS_HOST
       value: redis-master
     - name: SPRING_DATA_REDIS_PASSWORD
-      value:
+      value: ''
     - name: SPRING_DATA_REDIS_PORT
       value: '6379'
     - name: SPRING_DATA_REDIS_TIMEOUT
@@ -377,8 +377,6 @@ comment:
       value: 'http://rengage-presentationlayer:8080'
     - name: RENGAGE_TEMPLATE_URL
       value: 'http://rengage-template:8082/api/template'
-    - name: RENGAGE_COMMENT_URL
-      value: 'http://rengage-comment:8083/api/comment'
     - name: RENGAGE_BILL_URL
       value: 'http://rengage-bill:8084/api/bill'
     - name: sendGridApiKey
@@ -394,7 +392,7 @@ comment:
   securityContext: {}
   service:
     type: ClusterIP
-    port: 80
+    port: 8083
   ingress:
     enabled: false
     className: ""
@@ -823,7 +821,7 @@ frontend:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/react-demo
     pullPolicy: IfNotPresent
-    tag: "5f2c1e6d"
+    tag: "2247b24e"
   env: []
   imagePullSecrets: []
   podAnnotations: {}
@@ -893,7 +891,7 @@ blocfree:
     - name: NEXT_PUBLIC_GOOGLE_CLIENT_ID
       value: 161367630061-fpiv9qemmn7o9jktcgleo67gf7kvreva.apps.googleusercontent.com
     - name: NEXT_PUBLIC_INGEST_API_HOST
-      value: 'https://ingest.rengage.net/api/v1/capture'
+      value: 'TO_BE_ADDED'
     - name: NEXT_PUBLIC_INGEST_TENANT
       value: Blocfree
     - name: NEXT_PUBLIC_INGEST_TOKEN
@@ -1561,7 +1559,7 @@ presentationlayer:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/presentation-layer
     pullPolicy: IfNotPresent
-    tag: "e9a19cd6"
+    tag: "8ea318a7"
   env:
     - name: CLICKHOUSE_ENV
       value: 'preprod'
@@ -1696,8 +1694,6 @@ template:
       value: admin
     - name: RENGAGE_USER_URL
       value: 'http://rengage-presentationlayer:8080'
-    - name: RENGAGE_TEMPLATE_URL
-      value: 'http://rengage-template:8082/api/template'
     - name: RENGAGE_COMMENT_URL
       value: 'http://rengage-comment:8083/api/comment'
     - name: RENGAGE_BILL_URL
@@ -1739,7 +1735,7 @@ template:
   securityContext: {}
   service:
     type: ClusterIP
-    port: 80
+    port: 8082
   ingress:
     enabled: false
     className: ""
