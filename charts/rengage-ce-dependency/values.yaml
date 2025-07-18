@@ -116,3 +116,6 @@ mysql:
     persistence:
       size: 100Gi
     resourcesPreset: "large"
+  initdbScripts:
+    create-multi-dbs.sql: |
+      CREATE DATABASE IF NOT EXISTS blocfree_rengage;
