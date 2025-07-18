@@ -117,5 +117,20 @@ mysql:
       size: 100Gi
     resourcesPreset: "large"
   initdbScripts:
-    create-multi-dbs.sql: |
-      CREATE DATABASE IF NOT EXISTS blocfree_rengage;
+    rengage_init_script.sh: |
+      #!/bin/bash
+      if [[ $(hostname) == *-0 ]]; then
+        echo "Primary node"
+        password_aux="${MYSQL_ROOT_PASSWORD:-}"
+        if [[ -f "${MYSQL_ROOT_PASSWORD_FILE:-}" ]]; then
+            password_aux=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
+        fi
+        echo "Creating database and granting privileges..."
+        mysql -P 3306 -uroot -p"$password_aux" -e "
+          CREATE DATABASE IF NOT EXISTS blocfree_rengage;
+          GRANT ALL PRIVILEGES ON blocfree_rengage.* TO 'mysql'@'%';
+          FLUSH PRIVILEGES;"
+        echo "Database created and privileges granted to user 'mysql'"
+      else
+        echo "Secondary node - skipping DB init"
+      fi
