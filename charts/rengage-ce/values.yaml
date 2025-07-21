@@ -983,20 +983,18 @@ ingest:
 ingestwebhook:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/openresty-webhook
     pullPolicy: IfNotPresent
-    tag: ""
+    tag: "4de8d650_20250313061221"
   env:
-    - name: redishost
+    - name: REDIS_HOST
       value: redis-master
-    - name: redisssl
+    - name: REDIS_SSL
       value: 'false'
-    - name: redisport
-      value: '6379'
-    - name: KAFKA_SERVER
+    - name: KAFKA_BROKERS
       value: 'kafka:9092'
-    - name: Env
-      value: prod
+    - name: ENV
+      value: 'preprod'
     - name: email_webhook_topic
       value: email_webhook_prod
     - name: sms_webhook_topic
