@@ -202,7 +202,7 @@ dataprocessinglayer:
     - name: spring.data.redis.lettuce.pool.max-wait
       value: '10000'
     - name: spring.data.redis.ssl
-      value: 'true'
+      value: 'false'
     - name: spring.kafka.isAuthorization
       value: 'false'
     - name: confluent.enable
@@ -434,11 +434,11 @@ conductor:
     - name: conductor.redis.hosts
       value: redis-master:6379:111
     - name: conductor.redis.isSSL
-      value: "true"
+      value: "false"
     - name: conductor.redis.isQueueRedisSSL
       value: "true"
     - name: conductor.redis.tls
-      value: "true"
+      value: "false"
     - name: journey-insight.db.type
       value: kafka
     - name: journey-insight.kafka.bootstrapServers
@@ -677,7 +677,7 @@ consumer:
     - name: spring.data.redis.lettuce.pool.max-wait
       value: '10000'
     - name: spring.data.redis.ssl
-      value: 'true'
+      value: 'false'
     - name: spring.kafka.isAuthorization
       value: 'true'
     - name: confluent.enable
@@ -789,7 +789,7 @@ feedmanager:
     - name: REDIS_PASSWORD
       value: ''
     - name: REDIS_TLS
-      value: 'true'
+      value: 'false'
     - name: REDIS_DB
       value: '0'
   imagePullSecrets: []
@@ -949,7 +949,7 @@ ingest:
     - name: redishost
       value: redis-master
     - name: redisssl
-      value: 'true'
+      value: 'false'
     - name: redisport
       value: '6379'
     - name: KAFKA_SERVER
@@ -990,7 +990,7 @@ ingestwebhook:
     - name: redishost
       value: redis-master
     - name: redisssl
-      value: 'true'
+      value: 'false'
     - name: redisport
       value: '6379'
     - name: KAFKA_SERVER
@@ -1180,7 +1180,7 @@ pushworker:
     - name: apns.env
       value: prod
     - name: spring.data.redis.ssl
-      value: 'true'
+      value: 'false'
     - name: spring.data.redis.host
       value: redis-master
   imagePullSecrets: []
@@ -1340,7 +1340,7 @@ smartemailworker:
     - name: worker.serverURI
       value: 'http://rengage-conductor:8080/api/'
     - name: spring.data.redis.ssl
-      value: 'true'
+      value: 'false'
     - name: spring.data.redis.host
       value: redis-master
     - name: spring.data.redis.port
@@ -1409,7 +1409,7 @@ smartpushworker:
     - name: worker.serverURI
       value: 'http://rengage-conductor:8080/api/'
     - name: spring.data.redis.ssl
-      value: 'true'
+      value: 'false'
     - name: spring.data.redis.host
       value: redis-master
     - name: spring.data.redis.port
@@ -1484,7 +1484,7 @@ smsworker:
     - name: twilio.endpoints.statusCallbackUrl
       value: 'http://ingest-webhook.rengage.net/api/v1/sms/webhook'
     - name: spring.data.redis.ssl
-      value: 'true'
+      value: 'false'
     - name: spring.data.redis.host
       value: redis-master
   imagePullSecrets: []
@@ -1563,6 +1563,16 @@ presentationlayer:
     pullPolicy: IfNotPresent
     tag: "8ea318a7"
   env:
+    - name: STORAGE_PROVIDER
+      value: "minio"
+    - name: MINIO_ENDPOINT
+      value: "http://minio:9000"
+    - name: MINIO_ACCESSKEY
+      value: "minioadmin"
+    - name: MINIO_SECRETKEY
+      value: "minioadmin"
+    - name: MINIO_BUCKET
+      value: "test"
     - name: CLICKHOUSE_ENV
       value: 'preprod'
     - name: CACHE_SERVICE_URL
@@ -1589,7 +1599,7 @@ presentationlayer:
     - name: SPRING_DATA_REDIS_PORT
       value: '6379'
     - name: SPRING_DATA_REDIS_SSL
-      value: 'true'
+      value: 'false'
     - name: awsEventBridge.lambdaArnSuffix
       value: prod
     - name: bulkJobManager.type
@@ -1819,7 +1829,7 @@ userconsumer:
     - name: spring.kafka.user.tenant-name
       value: 'recroom_dev,rengage,Solvely,recroom,blocfree,trendsi'
     - name: spring.data.redis.ssl
-      value: 'true'
+      value: 'false'
     - name: spring.kafka.isAuthorization
       value: 'true'
     - name: confluent.enable
