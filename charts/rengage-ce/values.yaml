@@ -1685,7 +1685,7 @@ template:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/template-service
     pullPolicy: IfNotPresent
-    tag: "2025-04-23"
+    tag: "2025-07-21"
   env:
     - name: DATABASE_PASSWORD
       value: 'password'
