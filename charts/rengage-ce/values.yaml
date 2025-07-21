@@ -823,7 +823,7 @@ frontend:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/react-demo
     pullPolicy: IfNotPresent
-    tag: "2247b24e"
+    tag: "5c5c4ac9"
   env: []
   imagePullSecrets: []
   podAnnotations: {}
@@ -942,18 +942,18 @@ blocfree:
 ingest:
   replicaCount: 1
   image:
-    repository: nginx
+    repository: public.ecr.aws/rengage/rengage-ce/openresty
     pullPolicy: IfNotPresent
-    tag: ""
+    tag: "20250721_1143"
   env:
-    - name: redishost
+    - name: REDIS_HOST
       value: redis-master
-    - name: redisssl
+    - name: REDIS_SSL
       value: 'false'
-    - name: redisport
-      value: '6379'
-    - name: KAFKA_SERVER
+    - name: KAFKA_BROKERS
       value: 'kafka:9092'
+    - name: ENV
+      value: 'preprod'
   imagePullSecrets: []
   podAnnotations: {}
   podLabels: {}
