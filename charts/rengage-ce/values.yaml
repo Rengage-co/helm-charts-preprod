@@ -944,7 +944,7 @@ ingest:
   image:
     repository: public.ecr.aws/rengage/rengage-ce/openresty
     pullPolicy: IfNotPresent
-    tag: "20250721_1143"
+    tag: "20250721_1643"
   env:
     - name: REDIS_HOST
       value: redis-master
