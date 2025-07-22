@@ -1,6 +1,6 @@
 apiVersion: v2
 name: rengage-ce-dependency
-description: A Helm chart for deploying Rengage CE (Community Edition) depandencies
+description: A Helm chart for deploying Rengage CE (Community Edition) dependencies
 home: https://rengage.ai/
 icon: https://rengage.ai/img/logo.svg
 

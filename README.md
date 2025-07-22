@@ -18,14 +18,81 @@ Rengage CE is built on a scalable microservices architecture deployed and manage
 ## Architecture & Requirements
 
 ### Components
-- `rengage-ce-depandency`: Core dependencies required to run Rengage (e.g., Redis)  
+- `rengage-ce-dependency`: Core dependencies required to run Rengage (e.g., Redis)  
 - `rengage-ce`: Main Rengage services and APIs  
-- `prometheus`: Monitoring infrastructure
 
 ### Prerequisites
 - Kubernetes cluster (v1.19 or higher)  
 - Helm (v3.7 or higher)  
-- `kubectl` access to your Kubernetes cluster
+- <span style="color:red">kubectl</span> access to your Kubernetes cluster
+
+### Official Guides for Granting `kubectl` Access and Permissions on AWS, GCP, and Azure
+
+This section lists official documentation links and key points on how to configure and authorize `kubectl` access to Kubernetes clusters on AWS EKS, GCP GKE, and Azure AKS.
+
+---
+
+#### AWS EKS (Amazon Elastic Kubernetes Service)
+
+- **Official Docs:**  
+  - [Managing users or IAM roles for your cluster](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html)  
+  - [Configure kubectl for Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)
+
+- **Key Points:**  
+  - Use **IAM users or roles** bound to Kubernetes RBAC permissions to control access.  
+  - Generate kubeconfig with:  
+    ```bash
+    aws eks --region <region> update-kubeconfig --name <cluster_name>
+    ```  
+  - Authentication uses **AWS IAM Authenticator** to validate identities.  
+  - You can map IAM entities to Kubernetes users or groups in the `aws-auth` ConfigMap.
+
+---
+
+#### GCP GKE (Google Kubernetes Engine)
+
+- **Official Docs:**  
+  - [Granting RBAC permissions](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)  
+  - [Authenticate to the cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl)
+
+- **Key Points:**  
+  - Access control is managed by Google Cloud **IAM roles** combined with Kubernetes **RBAC**.  
+  - Generate kubeconfig using:  
+    ```bash
+    gcloud container clusters get-credentials <cluster_name> --zone <zone> --project <project_id>
+    ```  
+  - Users authenticate via their Google Cloud accounts and permissions are enforced both in GCP IAM and Kubernetes RBAC.  
+
+---
+
+#### Azure AKS (Azure Kubernetes Service)
+
+- **Official Docs:**  
+  - [Manage cluster access with RBAC and Azure Active Directory](https://learn.microsoft.com/en-us/azure/aks/manage-azure-rbac)  
+  - [Connect to the cluster using kubectl](https://learn.microsoft.com/en-us/azure/aks/kubernetes-walkthrough#connect-to-the-cluster)
+
+- **Key Points:**  
+  - Supports **Azure Active Directory (AD)** integration combined with Kubernetes RBAC for fine-grained access control.  
+  - Obtain kubeconfig with:  
+    ```bash
+    az aks get-credentials --resource-group <resource_group> --name <cluster_name>
+    ```  
+  - Users authenticate using Azure AD identities, and access is controlled via role assignments in Azure and Kubernetes role bindings.
+
+---
+
+#### Summary
+
+| Cloud Provider | Authentication Mechanism           | Key Command to Configure `kubectl`                                  |
+|----------------|----------------------------------|--------------------------------------------------------------------|
+| AWS EKS        | IAM + Kubernetes RBAC            | `aws eks update-kubeconfig --region <region> --name <cluster_name>` |
+| GCP GKE        | Google Cloud IAM + Kubernetes RBAC | `gcloud container clusters get-credentials <cluster_name> ...`       |
+| Azure AKS      | Azure AD + Kubernetes RBAC       | `az aks get-credentials --resource-group <rg> --name <cluster_name>` |
+
+---
+
+> **Note:** Replace placeholders like `<region>`, `<cluster_name>`, `<resource_group>`, `<project_id>`, and `<zone>` with your actual values.
+
 
 ### Minimum System Requirements
 
@@ -75,7 +142,7 @@ kubectl apply -f secret.yaml
 Install Rengage CE dependencies (e.g., Redis):
 
 ```bash
-helm install my-rengage-ce-dep rengage-preprod/rengage-ce-depandency
+helm install my-rengage-ce-dep rengage-preprod/rengage-ce-dependency
 ```
 
 ### 5. Install the Main Application
@@ -181,7 +248,7 @@ nginx:
 
 ## Dependency Chart Configuration
 
-The `rengage-ce-depandency` chart allows customization of Redis and other system-level dependencies.
+The `rengage-ce-dependency` chart allows customization of Redis and other system-level dependencies.
 
 ---
 
