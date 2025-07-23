@@ -130,13 +130,27 @@ helm repo update
 
 > If you've already added the repo before, just run `helm repo update` to ensure you have the latest chart versions.
 
-### 3. Load Firebase Credentials
-Before installation, you must apply the Firebase `service_account` credentials via a secret file.  
-Contact support to get the required `secret.yaml`.
+### 3. Enable Authentication
 
-```bash
-kubectl apply -f secret.yaml
-```
+Rengage supports authentication through [Google Firebase](https://console.firebase.google.com/). Below is a high-level guide to setting up Firebase Authentication for your Rengage application.
+
+#### Step 1: Create a Firebase Project
+- Go to the [Firebase Console](https://console.firebase.google.com/) and sign in with your Google account.
+- Create a new project or select an existing one.
+
+#### Step 2: Enable Authentication Providers
+- In the Firebase Console, navigate to **Build > Authentication**.
+- Click on the **Sign-in method** tab.
+- Enable the authentication providers you want to use (e.g., Email/Password, Google, Facebook, Phone).
+- Follow the provider-specific setup instructions (such as setting up OAuth credentials for social logins).
+
+#### Step 3: Add Firebase to Your Rengage Application
+- After deploying the Rengage application in your cloud environment, open the application in a browser.
+- The **initialization wizard** will launch automatically the first time you open the application.
+- The wizard will guide you through integrating Firebase, which typically includes:
+  - Configuring your application’s DNS domain.
+  - Generating and uploading a private key file for your Firebase service account (required if you plan to use Rengage to send push notifications).
+
 
 ### 4. Install Dependencies
 Install Rengage CE dependencies (e.g., Redis):
