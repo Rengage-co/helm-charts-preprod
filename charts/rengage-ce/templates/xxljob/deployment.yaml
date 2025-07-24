@@ -16,7 +16,7 @@ spec:
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
-      {{- with .Values.x x l j o b.podAnnotations }}
+      {{- with .Values.xxljob.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
