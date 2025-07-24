@@ -1,0 +1,45 @@
+{{- if .Values.xxljob.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-xxljob" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-xxljob" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+  {{- with .Values.xxljob.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.xxljob.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.xxljob.ingress.tls }}
+  tls:
+    {{- range .Values.xxljob.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.xxljob.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- with .pathType }}
+            pathType: {{ . }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ printf "%s-xxljob" (include "rengage-ce.fullname" $) }}
+                port:
+                  number: {{ $.Values.xxljob.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}

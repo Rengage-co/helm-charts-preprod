@@ -1,0 +1,34 @@
+{{- if .Values.xxljob.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ printf "%s-xxljob" (include "rengage-ce.fullname" .) }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-xxljob" (include "rengage-ce.name" .) }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "rengage-ce.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ printf "%s-xxljob" (include "rengage-ce.fullname" .) }}
+  minReplicas: {{ .Values.xxljob.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.xxljob.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.xxljob.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.xxljob.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.xxljob.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.xxljob.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

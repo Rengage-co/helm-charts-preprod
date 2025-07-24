@@ -20,6 +20,13 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
+global:
+  MYSQL_URL: "mysql"
+  MYSQL_PORT: "3306"
+  MYSQL_SSL:  "false"
+  MYSQL_USERNAME: "mysql"
+  MYSQL_PASSWORD: "password"
+
 nginx:
   # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
   replicaCount: 1
@@ -276,6 +283,33 @@ aiagent:
           - path: /
             pathType: ImplementationSpecific
     tls: []
+  resources: {}
+  livenessProbe: {}
+  readinessProbe: {}
+  autoscaling:
+    enabled: false
+  volumes: []
+  volumeMounts: []
+
+xxljob:
+  replicaCount: 1
+  image:
+    repository: xuxueli/xxl-job-admin:3.1.1
+    pullPolicy: IfNotPresent
+    tag: "3.1.1"
+  env:
+    - name: PARAMS
+      value: "--spring.datasource.url=jdbc:mysql://{{ .Values.global.MYSQL_URL }}:{{ .Values.global.MYSQL_PORT }}/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
+  imagePullSecrets: []
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  service:
+    type: ClusterIP
+    port: 8080
+  ingress:
+    enabled: false
   resources: {}
   livenessProbe: {}
   readinessProbe: {}
