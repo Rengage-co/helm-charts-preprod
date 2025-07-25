@@ -294,7 +294,7 @@ aiagent:
 xxljob:
   replicaCount: 1
   image:
-    repository: xuxueli/xxl-job-admin:3.1.1
+    repository: xuxueli/xxl-job-admin
     pullPolicy: IfNotPresent
     tag: "3.1.1"
   env:
