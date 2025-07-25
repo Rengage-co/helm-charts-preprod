@@ -45,7 +45,7 @@ spec:
                 echo "Running MySQL init script from /sql/init.sql..."
                 mysql -h {{ .Values.global.mysql.host }} \
                       -P {{ .Values.global.mysql.port }} \
-                      -u {{ .Values.global.mysql.user }} \
+                      -u {{ .Values.global.mysql.username }} \
                       -p'{{ .Values.global.mysql.password }}' \
                       {{- if .Values.global.mysql.ssl }} --ssl {{- end }} \
                       -e "source /sql/init.sql"
