@@ -43,12 +43,7 @@ spec:
             - |
               if [ ! -f /init-data/init.done ]; then
                 echo "Running MySQL init script from /sql/init.sql..."
-                mysql -h {{ .Values.global.mysql.host }} \
-                      -P {{ .Values.global.mysql.port }} \
-                      -u {{ .Values.global.mysql.username }} \
-                      -p{{ .Values.global.mysql.password }} \
-                      {{- if eq .Values.global.mysql.ssl true }} --ssl-mode=REQUIRED {{- end }} \
-                      {{ .Values.global.mysql.database }} < /sql/init.sql
+                mysql -h {{ .Values.global.mysql.host }} -P {{ .Values.global.mysql.port }} -u {{ .Values.global.mysql.username }} -p{{ .Values.global.mysql.password }} {{- if eq (toString .Values.global.mysql.ssl) "true" }} --ssl-mode=REQUIRED {{- end }} {{ .Values.global.mysql.database }} < /sql/init.sql
                 touch /init-data/init.done
               else
                 echo "MySQL already initialized. Skipping."
