@@ -307,8 +307,8 @@ xxljob:
     enabled: false
   volumes:
     - name: init-data
-        persistentVolumeClaim:
-          claimName: xxljob-init-pvc
+      persistentVolumeClaim:
+        claimName: xxljob-init-pvc
   init:
     sql: |
       CREATE database if NOT EXISTS `xxl_job` default character set utf8mb4 collate utf8mb4_unicode_ci;
