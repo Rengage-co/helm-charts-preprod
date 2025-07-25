@@ -35,6 +35,27 @@ spec:
       serviceAccountName: {{ include "rengage-ce.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.xxljob.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: mysql-init
+          image: mysql:8.0
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              if [ ! -f /init-data/init.done ]; then
+                echo "Running MySQL init script..."
+                echo '{{ tpl .Values.init.sql . | replace "'" "'\\''" }}' > /init.sql
+                mysql -h {{ .Values.global.mysql.host }} \
+                      -P {{ .Values.global.mysql.port }} \
+                      -u {{ .Values.global.mysql.user }} \
+                      -p'{{ .Values.global.mysql.password }}' \
+                      {{ .Values.global.mysql.database }} < /init.sql
+                touch /init-data/init.done
+              else
+                echo "MySQL already initialized. Skipping."
+              fi
+          volumeMounts:
+            - name: init-data
+              mountPath: /init-data
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
