@@ -22,7 +22,10 @@ Rengage CE is built on a scalable microservices architecture deployed and manage
 - `rengage-ce`: Main Rengage services and APIs  
 
 ### Prerequisites
-- Kubernetes cluster (v1.19 or higher)  
+- Kubernetes cluster (v1.19 or higher)
+  - [Setting up Kubernetes Cluster on GCP](https://cloud.google.com/kubernetes-engine/docs/quickstarts/create-cluster)
+  - [Setting up Kubernetes Cluster on AWS](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html)
+  - [Setting up Kubernetes cluster on Azure](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli)  
 - Helm (v3.7 or higher)  
 - <span style="color:red">kubectl</span> access to your Kubernetes cluster
 
