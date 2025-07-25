@@ -48,8 +48,7 @@ spec:
                       -u {{ .Values.global.mysql.username }} \
                       -p'{{ .Values.global.mysql.password }}' \
                       {{- if eq .Values.global.mysql.ssl true }} --ssl-mode=REQUIRED {{- end }} \
-                      {{ .Values.global.mysql.database }} \
-                      -e "source /sql/init.sql"
+                      {{ .Values.global.mysql.database }} < /sql/init.sql
                 touch /init-data/init.done
               else
                 echo "MySQL already initialized. Skipping."
