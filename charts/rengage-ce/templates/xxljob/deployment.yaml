@@ -42,7 +42,8 @@ spec:
           image: "{{ .Values.xxljob.image.repository }}:{{ .Values.xxljob.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.xxljob.image.pullPolicy }}
           env:
-            {{- toYaml .Values.xxljob.env | nindent 12 }}
+            - name: PARAMS
+              value: "--spring.datasource.url=jdbc:mysql://{{ .Values.global.MYSQL_URL }}:{{ .Values.global.MYSQL_PORT }}/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true"
           ports:
             - name: http
               containerPort: {{ .Values.xxljob.service.port }}
