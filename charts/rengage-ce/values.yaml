@@ -38,7 +38,7 @@ global:
     port: '3306'
     username: 'mysql'
     password: 'password'
-    ssl: 'false'
+    ssl: false
     database: 'presentationlayer'
   kafka:
   minio:
