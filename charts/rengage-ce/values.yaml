@@ -39,6 +39,7 @@ global:
     username: 'mysql'
     password: 'password'
     ssl: 'false'
+    database: 'presentationlayer'
   kafka:
   minio:
 

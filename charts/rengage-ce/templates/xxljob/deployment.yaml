@@ -47,7 +47,8 @@ spec:
                       -P {{ .Values.global.mysql.port }} \
                       -u {{ .Values.global.mysql.username }} \
                       -p'{{ .Values.global.mysql.password }}' \
-                      {{- if .Values.global.mysql.ssl }} --ssl {{- end }} \
+                      {{- if eq .Values.global.mysql.ssl true }} --ssl-mode=REQUIRED {{- end }} \
+                      {{ .Values.global.mysql.database }} \
                       -e "source /sql/init.sql"
                 touch /init-data/init.done
               else
