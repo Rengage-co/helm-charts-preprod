@@ -48,7 +48,7 @@ spec:
                       -u {{ .Values.global.mysql.user }} \
                       -p'{{ .Values.global.mysql.password }}' \
                       {{- if .Values.global.mysql.ssl }} --ssl {{- end }} \
-                      xxl_job < /sql/init.sql
+                      -e "source /sql/init.sql"
                 touch /init-data/init.done
               else
                 echo "MySQL already initialized. Skipping."
