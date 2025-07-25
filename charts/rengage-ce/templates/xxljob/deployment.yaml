@@ -42,13 +42,13 @@ spec:
           args:
             - |
               if [ ! -f /init-data/init.done ]; then
-                echo "Running MySQL init script..."
-                echo '{{ tpl .Values.init.sql . | replace "'" "'\\''" }}' > /init.sql
+                echo "Running MySQL init script from /sql/init.sql..."
                 mysql -h {{ .Values.global.mysql.host }} \
                       -P {{ .Values.global.mysql.port }} \
                       -u {{ .Values.global.mysql.user }} \
                       -p'{{ .Values.global.mysql.password }}' \
-                      xxl_job < /init.sql
+                      {{- if .Values.global.mysql.ssl }} --ssl {{- end }} \
+                      xxl_job < /sql/init.sql
                 touch /init-data/init.done
               else
                 echo "MySQL already initialized. Skipping."
