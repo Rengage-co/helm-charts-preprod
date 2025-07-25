@@ -21,11 +21,26 @@ tolerations: []
 affinity: {}
 
 global:
-  MYSQL_URL: "mysql"
-  MYSQL_PORT: "3306"
-  MYSQL_SSL:  "false"
-  MYSQL_USERNAME: "mysql"
-  MYSQL_PASSWORD: "password"
+  redis:
+    host: ''
+    port: ''
+    username: ''
+    password: ''
+    ssl: ''
+  clickhouse:
+    host: ''
+    port: ''
+    username: ''
+    password: ''
+    ssl: ''
+  mysql:
+    host: 'mysql'
+    port: '3306'
+    username: 'mysql'
+    password: 'password'
+    ssl: 'false'
+  kafka:
+  minio:
 
 nginx:
   # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
@@ -130,28 +145,6 @@ nginx:
   # - name: foo
   #   mountPath: "/etc/foo"
   #   readOnly: true
-
-global:
-  redis:
-    host: ''
-    port: ''
-    username: ''
-    password: ''
-    ssl: ''
-  clickhouse:
-    host: ''
-    port: ''
-    username: ''
-    password: ''
-    ssl: ''
-  mysql:
-    host: ''
-    port: ''
-    username: ''
-    password: ''
-    ssl: ''
-  kafka:
-  minio:
 
 dataprocessinglayer:
   replicaCount: 1
