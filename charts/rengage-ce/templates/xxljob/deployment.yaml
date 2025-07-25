@@ -84,7 +84,6 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.xxljob.resources | nindent 12 }}
-          {{- with .Values.xxljob.volumeMounts }}
       {{- with .Values.xxljob.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
