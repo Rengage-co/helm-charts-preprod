@@ -128,7 +128,7 @@ mysql:
         echo "Creating database and granting privileges..."
         mysql -P 3306 -uroot -p"$password_aux" -e "
           CREATE DATABASE IF NOT EXISTS blocfree_rengage;
-          GRANT ALL PRIVILEGES ON blocfree_rengage.* TO 'mysql'@'%';
+          GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'%' WITH GRANT OPTION;
           FLUSH PRIVILEGES;"
         echo "Database created and privileges granted to user 'mysql'"
       else
