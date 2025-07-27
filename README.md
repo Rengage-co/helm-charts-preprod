@@ -189,6 +189,22 @@ To upgrade the deployment after editing:
 helm upgrade my-rengage-ce rengage-preprod/rengage-ce -f my-values.yaml
 ```
 
+### 7. DNS and SSL Configuration
+
+After customizing your deployment, you may want to expose Rengage CE with a custom domain and enable HTTPS.
+
+#### DNS Setup
+- Point your domains to the external address of your cluster (Ingress / LoadBalancer).
+  - frontend.ingress.hosts[0].host (e.g., `demo.rengage.net`)
+  - feedmanager.ingress.hosts[0].host (e.g., `feedmanager.rengage.net`)
+- Update your DNS records with your DNS provider (A record or CNAME).
+
+#### SSL/TLS Setup
+- You can enable HTTPS by configuring TLS:
+  - **Use an existing certificate**: Create a Kubernetes TLS secret and reference it in `values.yaml`.
+  - **Use cert-manager**: Automate the issuance of Let’s Encrypt certificates.
+  - **Use DNS provider's proxy**: Some DNS or CDN providers (such as Cloudflare) can proxy traffic and handle SSL termination on their network edge.
+
 ---
 
 ## Uninstall Rengage CE
