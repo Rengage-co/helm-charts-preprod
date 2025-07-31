@@ -20,6 +20,7 @@ Rengage CE is built on a scalable microservices architecture deployed and manage
 ### Components
 - `rengage-ce-dependency`: Core dependencies required to run Rengage (e.g., Redis)  
 - `rengage-ce`: Main Rengage services and APIs  
+  - For a full list of services and deployment details, see  [**Rengage Microservice List**](https://github.com/Rengage-co/helm-charts-preprod/blob/main/rengage_microservice_list.md)
 
 ### Prerequisites
 - Kubernetes cluster (v1.19 or higher)
