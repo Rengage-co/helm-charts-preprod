@@ -206,6 +206,21 @@ After customizing your deployment, you may want to expose Rengage CE with a cust
   - **Use cert-manager**: Automate the issuance of Let’s Encrypt certificates.
   - **Use DNS provider's proxy**: Some DNS or CDN providers (such as Cloudflare) can proxy traffic and handle SSL termination on their network edge.
 
+
+### 8. Authentication & SSO Configuration
+
+During the **initialization phase**, the platform will prompt you to set up the **administrator account**.
+
+After initialization, Rengage CE supports:
+- **Basic Authentication** (username/password)
+- **Single Sign-On (SSO)** via OpenID Connect (OIDC)
+
+Administrators can configure additional SSO/OIDC connections via the **Settings** page in the UI.  
+This allows integration with popular identity providers.
+
+For more details on OIDC setup, refer to the documentation:  
+[OpenID Connect (Google Developers)](https://developers.google.com/identity/openid-connect/openid-connect)
+
 ---
 
 ## Uninstall Rengage CE
